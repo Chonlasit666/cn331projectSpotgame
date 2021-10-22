@@ -6,3 +6,6 @@ def index(request):
 
 def contributors(request):
     return render(request, 'aboutme/contributors.html')
+
+def about(request):
+    return render(request, 'aboutme/about.html')
