@@ -9,6 +9,9 @@ h1{
     left: 30%;
     size: 80%;
 }
+h3{
+    color:palevioletred;
+}
 
 .SMQ{
     padding: 10px 10px 10px 20px;
@@ -88,17 +91,6 @@ img{
 }
 
 .raned {
-    padding-top: 10px;
-    margin-top: -410px;
-    margin-left: 950px;
-    height: 400px;
-    width: 300px;
-    background: rgba(0,0,0,30%);
-    border-radius: 10px;
-    text-align: center;
-}
-
-.linked{
     padding-top: 10px;
     margin-top: -410px;
     margin-left: 950px;
