@@ -38,3 +38,15 @@ class UsersManagersTests(TestCase):
         with self.assertRaises(ValueError):
             User.objects.create_superuser(
                 email='super@user.com', username='super', password='foo', is_superuser=False)
+
+
+class UserModelTest(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        user = User.objects.create_user(
+            email='normal@user.com', username='normal', password='foo')
+
+    def test_returns_user_model(self):
+        user = get_user_model().objects.get(pk=1)
+        self.assertEqual(user.email, str(user))
