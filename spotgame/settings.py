@@ -126,14 +126,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
 MEDIA_URL = '/images/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-]
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -141,7 +140,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ASGI_APPLICATION = "spotgame.asgi.application"
-
+'''
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
@@ -156,5 +155,5 @@ CHANNEL_LAYERS = {
         },
     },
 }
-'''
+
 AUTH_USER_MODEL = 'users.CustomUser'
