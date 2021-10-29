@@ -14,7 +14,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 import spotifymusicgame.routing
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'spotgame.settings')
 
 application = ProtocolTypeRouter({
   "http": get_asgi_application(),
