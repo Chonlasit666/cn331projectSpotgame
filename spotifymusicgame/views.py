@@ -1,11 +1,9 @@
 from django.shortcuts import render
 import spotipy
-from spotipy.oauth2 import SpotifyOAuth
+from spotipy.oauth2 import SpotifyClientCredentials
 
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="ffc4c1c607de49489dc5b071b326727e",
-                                               client_secret="4fd9dfe58f914768b24a034e1da88c2b",
-                                               redirect_uri="http://localhost:8888/callback",
-                                               scope="user-library-read"))
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="ffc4c1c607de49489dc5b071b326727e",
+                                                           client_secret="4fd9dfe58f914768b24a034e1da88c2b"))
 
 
 # Create your views here.
