@@ -11,12 +11,6 @@ sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="ffc4c1c607
                                                            client_secret="4fd9dfe58f914768b24a034e1da88c2b"))
 
 
-def index(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("login"))
-    return render(request, 'spotifymusicgame/index.html', {})
-
-
 def room(request, room_name):
     track = sp.track('spotify:track:6IG5ZOKnUryCcsvzopK23A')
     return render(request, 'spotifymusicgame/room.html', {
