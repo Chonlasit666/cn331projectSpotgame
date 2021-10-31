@@ -26,8 +26,7 @@ SECRET_KEY = 'django-insecure-imtb8^(n!wjvhhk()_#(m6ll-*2kof8!na&suu&%q+9u0$rioa
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-PREPEND_WWW = True
-BASE_URL = "https://spotifymusicquiz.herokuapp.com/"
+
 ALLOWED_HOSTS = ['*']
 
 
