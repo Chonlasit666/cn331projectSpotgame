@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-imtb8^(n!wjvhhk()_#(m6ll-*2kof8!na&suu&%q+9u0$rioa
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+PREPEND_WWW = False
+BASE_URL = "https://spotifymusicquiz.herokuapp.com"
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = ['*']
 
