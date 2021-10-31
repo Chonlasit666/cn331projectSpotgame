@@ -8,7 +8,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="ffc4c1c607
 
 
 class playList(models.Model):
-    url = models.URLField(max_length=255, blank=False, null=False)
+    url = models.URLField(max_length=255, blank=False, null=False, unique=True)
     count = models.IntegerField(default=0)
 
     def get_info(self):
@@ -30,6 +30,10 @@ class playList(models.Model):
             playlistObj[f"{count}"] = songObj
             count += 1
         return playlistObj
+
+    def __str__(self):
+        return self.get_info()["name"]
+
 
 class roomInfo(models.Model):
     player = models.ManyToManyField(
