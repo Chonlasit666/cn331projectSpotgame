@@ -1,10 +1,20 @@
 from django.db import models
 from django.conf import settings
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="ffc4c1c607de49489dc5b071b326727e",
+                                                           client_secret="4fd9dfe58f914768b24a034e1da88c2b"))
+
 
 class playList(models.Model):
     url = models.URLField(max_length=255, blank=False, null=False)
     count = models.IntegerField(default=0)
 
+    def info(self):
+        track = sp.track(self.url)
+        return track
+    
 
 class roomInfo(models.Model):
     player = models.ManyToManyField(
