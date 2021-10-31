@@ -11,15 +11,16 @@ class playList(models.Model):
     url = models.URLField(max_length=255, blank=False, null=False)
     count = models.IntegerField(default=0)
 
-    def info(self):
+    def get_info(self):
         playlist = sp.playlist(self.url)
         return playlist
 
     def get_track(self):
-        playlist = self.info
+        playlist_uri = self.get_info()
+        a = playlist_uri['tracks']['items']
         playlistObj = {}
         count = 0
-        for i in playlist:
+        for i in a:
             songObj = {
                 "artist": i['track']['artists'][0]['name'],
                 "image": i['track']['album']['images'][0]['url'],

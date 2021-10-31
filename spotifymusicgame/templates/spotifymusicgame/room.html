@@ -20,7 +20,7 @@
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
     {{ room_name|json_script:"room-name" }}
-    {{ request.user.username|json_script:"user_username" }}
+    {{ request.user.username|json_script:"user_username" }}     
     <p1><a href="{% url 'index' %}">Return</a></1p>
     <script>
         const user_username = JSON.parse(document.getElementById('user_username').textContent);

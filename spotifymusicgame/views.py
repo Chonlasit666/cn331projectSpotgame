@@ -53,13 +53,8 @@ def createroom(request):
     data = []
     if request.method == "POST":
         a = request.POST['texttxt']
-        try:
-            playlist = playList.create(a)
-            playlist.get_track()
-            print(playlist)
-        except:
-            data = ['There are no data']
-            
+        playlist = playList.objects.create(url=a)
+        data = playlist.get_track()
     else:
         data = ['Please,Input your track']
     
