@@ -7,8 +7,19 @@ sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="ffc4c1c607
                                                            client_secret="4fd9dfe58f914768b24a034e1da88c2b"))
 
 
+class songModel(models.Model):
+    artist = models.CharField(max_length=100)
+    image = models.CharField(max_length=255)
+    song = models.CharField(max_length=255)
+    uri = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.song + " by " + self.artist
+
+
 class playList(models.Model):
     url = models.URLField(max_length=255, blank=False, null=False, unique=True)
+    song_list = models.ManyToManyField(songModel, related_name="playlist")
     count = models.IntegerField(default=0)
 
     def get_info(self):
@@ -18,21 +29,26 @@ class playList(models.Model):
     def get_track(self):
         playlist_uri = self.get_info()
         a = playlist_uri['tracks']['items']
-        playlistObj = {}
-        count = 0
         for i in a:
-            songObj = {
-                "artist": i['track']['artists'][0]['name'],
-                "image": i['track']['album']['images'][0]['url'],
-                "song": i['track']['name'],
-                "uri": i['track']['preview_url']
-            }
-            playlistObj[f"{count}"] = songObj
-            count += 1
-        return playlistObj
+            if not songModel.objects.filter(song=i['track']['name']).exists():
+                song = songModel.objects.create(artist=i['track']['artists'][0]['name'],
+                                                image=i['track']['album']['images'][0]['url'],
+                                                song=i['track']['name'],
+                                                uri=i['track']['preview_url'])
+
+    def add_track_to_list(self):
+        playlist_uri = self.get_info()
+        a = playlist_uri['tracks']['items']
+        song_list = []
+        for i in a:
+            song = songModel.objects.get(song=i['track']['name'])
+            self.song_list.add(song)
+            song_list.append(song)
+        self.save()
+        return song_list
 
     def __str__(self):
-        return self.get_info()["name"]
+        return self.url
 
 
 class roomInfo(models.Model):
