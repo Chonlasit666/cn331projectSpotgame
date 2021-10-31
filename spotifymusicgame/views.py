@@ -22,28 +22,6 @@ def room(request, room_name):
     })
 
 
-def login_view(request):
-    if request.method == "POST":
-        email = request.POST["username"]
-        passw = request.POST["password"]
-        user = authenticate(request, username=email, password=passw)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse("index"))
-        else:
-            return render(request, "spotifymusicgame/login.html", {
-                "message": "Invalid credentials"
-            })
-    return render(request, "spotifymusicgame/login.html")
-
-
-def logout_view(request):
-    logout(request)
-    return render(request, "spotifymusicgame/login.html", {
-        "message": "Logged out."
-    })
-
-
 def about(request):
     return render(request, 'spotifymusicgame/aboutme.html')
 
