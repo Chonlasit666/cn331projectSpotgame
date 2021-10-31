@@ -12,9 +12,23 @@ class playList(models.Model):
     count = models.IntegerField(default=0)
 
     def info(self):
-        track = sp.track(self.url)
-        return track
-    
+        playlist = sp.playlist(self.url)
+        return playlist
+
+    def get_track(self):
+        playlist = self.info
+        playlistObj = {}
+        count = 0
+        for i in playlist:
+            songObj = {
+                "artist": i['track']['artists'][0]['name'],
+                "image": i['track']['album']['images'][0]['url'],
+                "song": i['track']['name'],
+                "uri": i['track']['preview_url']
+            }
+            playlistObj[f"{count}"] = songObj
+            count += 1
+        return playlistObj
 
 class roomInfo(models.Model):
     player = models.ManyToManyField(

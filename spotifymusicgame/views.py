@@ -54,19 +54,9 @@ def createroom(request):
     if request.method == "POST":
         a = request.POST['texttxt']
         try:
-            a = playlist_uri['tracks']['items']
-            count = 0
-            playlistObj = {}
-            for i in a:
-                songObj = {
-                "artist": i['track']['artists'][0]['name'],
-                "image": i['track']['album']['images'][0]['url'],
-                "song": i['track']['name'],
-                "uri": i['track']['preview_url']
-                }
-                playlistObj[f"{count}"] = songObj
-                count += 1
-            print(playlistObj["2"]["song"])
+            playlist = playList.create(a)
+            playlist.get_track()
+            print(playlist)
         except:
             data = ['There are no data']
             
