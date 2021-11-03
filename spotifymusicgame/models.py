@@ -13,6 +13,10 @@ class songModel(models.Model):
     song = models.CharField(max_length=255)
     uri = models.CharField(max_length=255)
 
+
+    
+        
+
     def __str__(self):
         return self.song + " by " + self.artist
 
@@ -26,7 +30,7 @@ class playList(models.Model):
         playlist = sp.playlist(self.url)
         return playlist
 
-    def get_track(self):
+    def create_track(self):
         playlist_uri = self.get_info()
         a = playlist_uri['tracks']['items']
         for i in a:

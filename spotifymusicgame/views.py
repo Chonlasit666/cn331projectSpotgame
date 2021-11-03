@@ -32,9 +32,7 @@ def createroom(request):
         a = request.POST['texttxt']
         if not playList.objects.filter(url=a).exists():
             playList.objects.create(url=a)
-        playlist = playList.objects.get(url=a)
-        playlist.get_track()
-        data = playlist.add_track_to_list()
+        data = ['test']
     else:
         data = ['Please,Input your track']
 
