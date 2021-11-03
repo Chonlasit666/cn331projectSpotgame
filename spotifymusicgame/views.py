@@ -1,3 +1,4 @@
+from django.core import serializers
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, HttpResponse, get_object_or_404,  redirect
 from django.urls import reverse
@@ -32,11 +33,11 @@ def createroom(request):
         a = request.POST['texttxt']
         if not playList.objects.filter(url=a).exists():
             playList.objects.create(url=a)
-        data = ['test']
+        qs = songModel.objects.filter(playlist__url=a)
+        qs_json = serializers.serialize('json', qs)
+        data = qs_json
     else:
         data = ['Please,Input your track']
 
-    return render(request, 'spotifymusicgame/createroom.html', {
-        "data": data,
-    }
+    return render(request, 'spotifymusicgame/createroom.html', {"data" : data}
     )
