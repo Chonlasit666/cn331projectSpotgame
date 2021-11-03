@@ -1,9 +1,9 @@
-from django.core import serializers
-from django.http.response import HttpResponseRedirect
-from django.shortcuts import render, HttpResponse, get_object_or_404,  redirect
-from django.urls import reverse
-from django.contrib.auth import authenticate, login, logout
-from django.contrib import admin
+from django.http.response import HttpResponseRedirect, JsonResponse
+from django.shortcuts import render
+
+
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 from .models import *
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -27,17 +27,31 @@ def about(request):
     return render(request, 'spotifymusicgame/aboutme.html')
 
 
-def createroom(request):
-    data = []
+def create_room_view(request):
+    return render(request, 'spotifymusicgame/createroom.html')
+
+
+def create_room_detial_view(request):
+    """
+    qs = songModel.objects.all()
+    song_list = [{"artist": x.artist, "image": x.image, "song": x.song, "uri": x.uri} for x in qs]
+    data = {
+        "response": song_list
+    }
+    return JsonResponse(data)
+    """
+    data = {}
     if request.method == "POST":
         a = request.POST['texttxt']
         if not playList.objects.filter(url=a).exists():
             playList.objects.create(url=a)
         qs = songModel.objects.filter(playlist__url=a)
-        qs_json = serializers.serialize('json', qs)
-        data = qs_json
-    else:
-        data = ['Please,Input your track']
+        song_list = [{"artist": x.artist, "image": x.image,
+                      "song": x.song, "uri": x.uri} for x in qs]
 
-    return render(request, 'spotifymusicgame/createroom.html', {"data" : data}
-    )
+        data = {
+            "response": song_list
+        }
+        print(data)
+    return JsonResponse(data)
+    """"""
