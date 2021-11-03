@@ -41,7 +41,7 @@ a {
   font-family: Raleway-Regular;
   font-size: 14px;
   line-height: 1.7;
-  color: #666666;
+  color: #b3b3b3;
   margin: 0px;
   transition: all 0.4s;
   -webkit-transition: all 0.4s;
@@ -184,7 +184,7 @@ iframe {
 .txt1 {
   font-family: Raleway-SemiBold;
   font-size: 13px;
-  color: #555555;
+  color: white;
   line-height: 1.4;
   text-transform: uppercase;
 }
@@ -199,7 +199,7 @@ iframe {
 .txt3 {
   font-family: Raleway-Regular;
   font-size: 13px;
-  color: #555555;
+  color: #121212;
   line-height: 1.4;
 }
 
@@ -223,13 +223,13 @@ iframe {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  background-color: #ebebeb;
+  background-color: #212121;
 }
 
 .wrap-login100 {
   width: 560px;
-  background: #fff;
-  border-radius: 10px;
+  background: #535353;
+  border-radius: 100px;
   position: relative;
 }
 
@@ -243,7 +243,7 @@ iframe {
 .login100-form-title {
   font-family: Raleway-Medium;
   font-size: 30px;
-  color: #555555;
+  color: white;
   line-height: 1.2;
   text-transform: uppercase;
   text-align: left;
@@ -257,7 +257,7 @@ iframe {
 .wrap-input100 {
   width: 100%;
   position: relative;
-  background-color: #fff;
+  background-color: #b3b3b3;
   border: 1px solid #e6e6e6;
   border-radius: 2px;
 }
@@ -346,11 +346,11 @@ iframe {
 }
 
 .btn-show-pass:hover {
-  color: #57b846;
+  color: #1db954;
 }
 
 .btn-show-pass.active {
-  color: #57b846;
+  color: #1db954;
 }
 
 /*==================================================================
@@ -399,7 +399,7 @@ iframe {
 }
 
 .input-checkbox100:checked+.label-checkbox100::before {
-  color: #57b846;
+  color: #1db954;
 }
 
 /*------------------------------------------------------------------
@@ -430,7 +430,7 @@ iframe {
   padding: 0 20px;
   min-width: 150px;
   height: 55px;
-  background-color: #333333;
+  background-color: #1db954;
   border-radius: 27px;
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
@@ -439,7 +439,7 @@ iframe {
 }
 
 .login100-form-btn:hover {
-  background-color: #57b846;
+  background-color: #121212;
 }
 
 /*------------------------------------------------------------------
