@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <title>Create room</title>
+<head>
+    <h1>Test CreateRoom</h1>
+</head>
+<body>
+
+
+<audio id="myAudio" autoplay>
+</audio>
+    
+<p>Click the buttons to play or pause the audio.</p>
+    
+<button onclick="playAudio()" type="button">Play Audio</button>
+<button onclick="pauseAudio()" type="button">Pause Audio</button> 
+<button onclick="nextAudio()" type="button">Next Audio</button> 
+    
+<script>
+var t ;
+var x = document.getElementById("myAudio"); 
+var y  = ["https://p.scdn.co/mp3-preview/08d6bfd37e740e3a303efa75b45f1d37b5801b70?cid=ffc4c1c607de49489dc5b071b326727e "
+        , "https://p.scdn.co/mp3-preview/b7041e6e20b4268e88d9318c4c8a7b845bd5d491?cid=ffc4c1c607de49489dc5b071b326727e "
+        , "https://p.scdn.co/mp3-preview/8f47182d861bbca0a9d7f9780a2f12ac6cbd6794?cid=ffc4c1c607de49489dc5b071b326727e "];
+    
+var i = 0;
+var state = false;
+x.src = y[i];
+    
+function playAudio() {
+    x.play(); 
+    t = document.getElementById("myAudio").duration;
+    t = t*1000;
+    setTimeout(nextAudio,30000);
+} 
+    
+function pauseAudio() { 
+    x.pause(); 
+} 
+    
+function nextAudio() { 
+    i++;
+    x.pause();
+    x.src = y[i];
+    x.load(); 
+    x.play();
+    setTimeout(nextAudio,30000);
+} 
+    
+function autoplay() {
+    i++;
+    x.pause();
+    x.src = y[i];
+    x.load(); 
+    x.play();
+}
+function myFunction() {
+  var x = document.getElementById("myAudio").duration;
+  document.getElementById("demo").innerHTML = x;
+}
+
+(document).ready(function() {
+   setTimeOut(function(){playAudio;},1000)
+});
+    </script>
+<button onclick="myFunction()">Try it</button>
+<p id="demo"></p>
+</body>
+</html>
