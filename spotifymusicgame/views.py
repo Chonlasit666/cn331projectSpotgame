@@ -28,17 +28,19 @@ def about(request):
 
 
 def createroom(request):
-    data = []
-    if request.method == "POST":
-        a = request.POST['texttxt']
-        if not playList.objects.filter(url=a).exists():
-            playList.objects.create(url=a)
-        qs = songModel.objects.filter(playlist__url=a)
-        qs_json = serializers.serialize('json', qs)
-        data = qs_json
-    else:
-        data = ['Please,Input your track']
+    data = "Please Enter you URI"
+    try:
+        if request.method == "POST":
+            a = request.POST['texttxt']
+            if not playList.objects.filter(url=a).exists():
+                playList.objects.create(url=a)
+            qs = songModel.objects.filter(playlist__url=a)
+            qs_json = serializers.serialize('json', qs)
+            data = qs_json
+    except:
+        data = None
 
-    return render(request, 'spotifymusicgame/createroom.html', {"data" : data,
-    "test" ; ''}
+    return render(request, 'spotifymusicgame/createroom.html', {
+        "data" : data,
+        }
     )
