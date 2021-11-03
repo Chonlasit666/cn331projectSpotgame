@@ -246,7 +246,7 @@ iframe {
   color: white;
   line-height: 1.2;
   text-transform: uppercase;
-  text-align: left;
+  text-align: middle;
   width: 100%;
   display: block;
 }
@@ -515,6 +515,20 @@ iframe {
 
 @media (max-width: 576px) {
   .wrap-login100 {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+.wrap-enter-room {
+  width: 600px;
+  background: #535353;
+  border-radius: 100px;
+  position: relative;
+}
+
+@media (max-width: 800px) {
+  .wrap-enter-room {
     padding-left: 15px;
     padding-right: 15px;
   }
