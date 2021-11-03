@@ -9,4 +9,4 @@ from .models import playList, songModel
 def create_track(sender, instance, created, **kwargs):
     if created:
         instance.create_track()
-
+        instance.add_track_song_list()
