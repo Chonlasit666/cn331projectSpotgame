@@ -48,3 +48,19 @@ def logout_view(request):
 
 def about(request):
     return render(request, 'spotifymusicgame/aboutme.html')
+
+def createroom(request):
+    data = []
+    if request.method == "POST":
+        a = request.POST['texttxt']
+        if not playList.objects.filter(url=a).exists():
+            playList.objects.create(url=a)
+        playlist = playList.objects.get(url=a)
+        data = playlist.get_track()
+    else:
+        data = ['Please,Input your track']
+    
+    return render(request,'spotifymusicgame/createroom.html',{
+        "data" : data ,
+    }
+)

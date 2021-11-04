@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <title>Create room</title>
+<head>
+    <h1>Test CreateRoom</h1>
+</head>
+<body>
+    <form action="{% url 'createroom' %}" method="post" >
+        {% csrf_token %}
+    <input type="text" name="texttxt">
+    <button type="submit">submit</button>
+        <p>{{data}}</p>
+</body>
+</html>
