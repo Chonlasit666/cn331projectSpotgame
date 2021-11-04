@@ -2,9 +2,12 @@ import json
 from typing import Counter
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import *
+from asgiref.sync import sync_to_async
+from channels.db import database_sync_to_async
+
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
-
 
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
@@ -37,6 +40,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json['message']
         username = text_data_json['username']
         action = text_data_json['action']
+
+
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,
@@ -53,9 +58,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = event['message']
         username = event['username']
         action = event['action']
+        
+        o_user = await self.users()
+        print(type(o_user))
+
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'message': message,
             'username': username,
             'action': action,
         }))
+
+    @database_sync_to_async
+    def users(self):
+        Subject.objects.create(pk= "test")
+        return Subject.objects.get(pk= "cn200").subject_id
