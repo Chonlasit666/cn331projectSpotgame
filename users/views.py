@@ -6,11 +6,6 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-def index(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("users:login"))
-    else:
-        return render(request, "users/index.html")
 
 def login_view(request):
     if request.method == "POST":
