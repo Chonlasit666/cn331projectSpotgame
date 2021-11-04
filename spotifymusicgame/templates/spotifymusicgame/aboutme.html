@@ -3,9 +3,9 @@
 <html>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="{%static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
     <link rel="stylesheet" type="text/css" href="{%static 'styles/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{%static 'styles/about.css' %}">
+    <link rel="stylesheet" type="text/css" href="{%static 'login/css/main.css' %}">
 </head>
 
 <body>
@@ -17,9 +17,10 @@
         <a href="{% url 'smg:aboutme' %} ">About</a>
         <a href="{% url 'users:logout' %}" , style="float: right;">Logout</a>
     </div>
+
     <!-- END OF NAVIGATION BAR !-->
     <br>
-    <h2> About us </h2>
+    <h1> About us </h1>
     <br>
     <div class="SMQ">
         <h2>What is <span class="SMQhead">Spotify Music Quiz</span>?</h2>
@@ -31,15 +32,58 @@
     <br>
     <div class="spotgame">
         <h2>What is <span class="sptgamecss">Spotgame</span>?</h2>
-        <p>Spotgame is the team that form by four college students. We(spotgame) are college students that keen to
+        <p>Spotgame is the team that form by four college students. We (spotgame) are college students that keen to
             try something new,
             something that challenge our knowledge to the limit, with high potential we are going to make this game
             happen no matter how hard it is</p>
     </div>
     <br> <br>
-    <h2>So let us introduce ourselves</h2>
-
-    <img src="{%static 'login/images/icons/spotify-logo.png' %}", style="text-align: center;" alt="spotify logo" class="center">
+    <h1>So let us introduce ourselves</h1>
+    <div class="column">
+        <div class="card">
+            <p class="aligncenter">
+                <img src="{%static 'images/moss.png'%}" alt="orange" class="center">
+            </p>
+            <div class="container">
+                <h3>Chonlasit Mooncorn 6110613020</h3>
+                <p style="color:white">"no more real world,I'll reject body and release the soul to EORZEA"</p>
+                <p style="color:white">"リンクスタート !!"</p>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="card">
+            <p class="aligncenter">
+                <img src="{%static 'images/jj.jpg'%}" alt="orange" class="center">
+            </p>
+            <div class="container">
+                <h3>Weeraphat Leelawittayanon 6210612823 </h3>
+                <p style="color:white"> "So Tired, I only want to play video games !" </p>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="card">
+            <p class="aligncenter">
+                <img src="{%static 'images/TVNG.jpg'%}" alt="orange" class="center">
+            </p>
+            <div class="container">
+                <h3>Patompong Vanasantipong 6210612856 </h3>
+                <p style="color:white"> "I lost my life because of FFXIV, now let me farm for a sec." </p>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="card">
+            <p class="aligncenter">
+                <img src="{%static 'images/bab.jpg'%}" alt="orange" class="center">
+            </p>
+            <div class="container">
+                <h3>Raned Chuphueak 6210612864 </h3>
+                <p style="color:white"> I'm too old to play game. NO MORE GAME I'LL BE WORKING MAN" </p>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -26,3 +26,13 @@ body {
     background-color: #04AA6D;
     color: white;
 }
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+  
+.sticky + .content {
+    padding-top: 102px;
+}

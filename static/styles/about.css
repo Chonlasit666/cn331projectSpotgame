@@ -62,13 +62,13 @@ img {
 
 .column {
     float: left;
-    width: 23%;
+    width: 25%;
     margin-bottom: 16px;
     padding: 0 8px;
 }
 
 .card {
-    background: #535353;
+    background: #333;
     box-shadow: 0 4px 8px 0 #121212;
     margin: 8px;
 }
