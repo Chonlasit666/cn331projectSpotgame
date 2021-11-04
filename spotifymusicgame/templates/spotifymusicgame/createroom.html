@@ -1,36 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <title>Create room</title>
-<head>
-    <h1>Test CreateRoom</h1>
-</head>
-<body>
-    <form action="{% url 'smg:create_room_detial' %}" method="post" >
+    <title>Create Room</title>
+<form action="{% url 'smg:createroom' %}" method="post">
     {% csrf_token %}
-    <input type="text" name="texttxt">
-    <button type="submit">submit</button>
-    
-    <script>
-    const xhr = new XMLHttpRequest()
-    const method = 'GET'
-    const url = "createroom/detial"
-    const responseType = "json"
 
-    xhr.responseType = responseType
-    xhr.open(method, url)
-    xhr.onload = function() {
-        const serverResponse = xhr.response
-        var listedItems = serverResponse.response
-        var i;
-        for (i = 0; i < listedItems.length; i++) {
-            console.log(i)
-            console.log(listedItems[i])
-        }
-    }
-    xhr.send()
+    <head>Settings</head>
+<body>
 
+    <input type ="text" name="Max_player">Max Player</input>
+    <input type ="text" name="URI">URI</input>
+    <button type="submit">Create Room</button>
 
-
-    </script>
+    {{ID}}
+ 
 </body>
 </html>

@@ -1,5 +1,6 @@
 from django.http.response import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.urls import reverse
 
 
 import json
@@ -28,7 +29,45 @@ def about(request):
 
 
 def create_room_view(request):
+    ID = None
+    if request.method == "POST":
+        URI_ = request.POST['URI']
+        Max_player = request.POST['Max_player']
+        if not playList.objects.filter(url=URI_).exists():
+            playList.objects.create(url=URI_)
+        this_playlist = playList.objects.get(url = URI_)
+        this_room = roomInfo.objects.create(url = this_playlist)
+        room_name = this_room.id
+        return HttpResponseRedirect(reverse("smg:room", args = (room_name,)))
+
     return render(request, 'spotifymusicgame/createroom.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def create_room_detial_view(request):
@@ -53,5 +92,8 @@ def create_room_detial_view(request):
             "response": song_list
         }
         print(data)
-    return JsonResponse(data)
+    return render(request, 'spotifymusicgame/createroom.html',{
+        "data": data
+        }
+    )
     """"""
