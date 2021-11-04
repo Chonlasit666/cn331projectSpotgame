@@ -1,139 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <title>Create room</title>
-<head>
-    <h1>Test CreateRoom</h1>
-</head>
-<body>
-<form action="{% url 'smg:createroom' %}" method="post" >
+    <title>Create Room</title>
+<form action="{% url 'smg:createroom' %}" method="post">
     {% csrf_token %}
 
-<audio id="myAudio">
-</audio>
-    
-<p>Click the buttons to play or pause the audio.</p>
-    
-<button onclick="playAudio()" type="button">Play Audio</button>
-<button onclick="pauseAudio()" type="button">Pause Audio</button> 
-<button onclick="nextAudio()" type="button">Next Audio</button> 
-<input type="text" name = "texttxt">
-<button type="submit">URI</button>
+    <head>Settings</head>
+<body>
 
-<div style="width: 40%;
-    border: 1px solid black;
-    background-color: lightcyan;
-    font-family: Helvetica, sans-serif;">
-        <div style="margin: 5%;">
-            <h1>
-                <u>Dictionary Data</u>
-            </h1>
-            <h2>
-                <u>All Data</u>
-            </h2>
-            <h4 id='alldata'></h4><br>
-            <h2>
-                <u>Neat Data</u>
-            </h2>
-            <h4 id='neatdata'></h4>
-        </div>
-    </div>
+    <input type ="text" name="Max_player">Max Player</input>
+    <input type ="text" name="URI">URI</input>
+    <button type="submit">Create Room</button>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-var data = JSON.parse("{{data|escapejs}}");
-var dataNode = document.getElementById('alldata');
-dataNode.innerHTML+="{{data|escapejs}}";
-dataNode = document.getElementById('neatdata');
-for(var x in data){
-    dataNode.innerHTML+=x+' : '+data[x][2] +'<br><br>';
-}
-
-
-
-
-
-
-
-
-
-var t ;
-var x = document.getElementById("myAudio");
-
-var y  = ["https://p.scdn.co/mp3-preview/08d6bfd37e740e3a303efa75b45f1d37b5801b70?cid=ffc4c1c607de49489dc5b071b326727e "
-        , "https://p.scdn.co/mp3-preview/b7041e6e20b4268e88d9318c4c8a7b845bd5d491?cid=ffc4c1c607de49489dc5b071b326727e "
-        , "https://p.scdn.co/mp3-preview/8f47182d861bbca0a9d7f9780a2f12ac6cbd6794?cid=ffc4c1c607de49489dc5b071b326727e "];
-    
-var i = 0;
-var state = false;
-x.src = y[i];
-    
-function playAudio() {
-    x.play(); 
-    t = document.getElementById("myAudio").duration;
-    t = t*1000;
-    setTimeout(nextAudio,30000);
-} 
-    
-function pauseAudio() { 
-    x.pause(); 
-} 
-    
-function nextAudio() { 
-    i++;
-    x.pause();
-    x.src = y[i];
-    x.load(); 
-    x.play();
-    setTimeout(nextAudio,30000);
-} 
-    
-function autoplay() {
-    i++;
-    x.pause();
-    x.src = y[i];
-    x.load(); 
-    x.play();
-}
-
-function myFunction() {
-  var x = document.getElementById("myAudio").duration;
-  document.getElementById("demo").innerHTML = x;
-}
-
-    </script>
-<button onclick="myFunction()">Try it</button>
-<p id="demo"></p>
-
-{{data}}
-
-<h4 id='neatdata'></h4>
-
+    {{ID}}
+ 
 </body>
 </html>

@@ -1,9 +1,10 @@
-from django.core import serializers
-from django.http.response import HttpResponseRedirect
-from django.shortcuts import render, HttpResponse, get_object_or_404,  redirect
+from django.http.response import HttpResponseRedirect, JsonResponse
+from django.shortcuts import render
 from django.urls import reverse
-from django.contrib.auth import authenticate, login, logout
-from django.contrib import admin
+
+
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 from .models import *
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -27,20 +28,72 @@ def about(request):
     return render(request, 'spotifymusicgame/aboutme.html')
 
 
-def createroom(request):
-    data = "Please Enter you URI"
-    try:
-        if request.method == "POST":
-            a = request.POST['texttxt']
-            if not playList.objects.filter(url=a).exists():
-                playList.objects.create(url=a)
-            qs = songModel.objects.filter(playlist__url=a)
-            qs_json = serializers.serialize('json', qs)
-            data = qs_json
-    except:
-        data = None
+def create_room_view(request):
+    ID = None
+    if request.method == "POST":
+        URI_ = request.POST['URI']
+        Max_player = request.POST['Max_player']
+        if not playList.objects.filter(url=URI_).exists():
+            playList.objects.create(url=URI_)
+        this_playlist = playList.objects.get(url = URI_)
+        this_room = roomInfo.objects.create(url = this_playlist)
+        ID = this_room.id
+        return HttpResponseRedirect(reverse("smg:room", args = {'room_name':ID}))
 
-    return render(request, 'spotifymusicgame/createroom.html', {
-        "data" : data,
+    return render(request, 'spotifymusicgame/createroom.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def create_room_detial_view(request):
+    """
+    qs = songModel.objects.all()
+    song_list = [{"artist": x.artist, "image": x.image, "song": x.song, "uri": x.uri} for x in qs]
+    data = {
+        "response": song_list
+    }
+    return JsonResponse(data)
+    """
+    data = {}
+    if request.method == "POST":
+        a = request.POST['texttxt']
+        if not playList.objects.filter(url=a).exists():
+            playList.objects.create(url=a)
+        qs = songModel.objects.filter(playlist__url=a)
+        song_list = [{"artist": x.artist, "image": x.image,
+                      "song": x.song, "uri": x.uri} for x in qs]
+
+        data = {
+            "response": song_list
+        }
+        print(data)
+    return render(request, 'spotifymusicgame/createroom.html',{
+        "data": data
         }
     )
+    """"""
