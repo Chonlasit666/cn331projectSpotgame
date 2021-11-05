@@ -1,15 +1,14 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django import forms
 from .models import CustomUser
-from django.forms import EmailField
-from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate
 
-'''class CustomUserCreationForm(UserCreationForm):
+class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ('email',)'''
+        fields = ('email',)
 
 class CustomUserChangeForm(UserChangeForm):
 
@@ -17,24 +16,25 @@ class CustomUserChangeForm(UserChangeForm):
         model = CustomUser
         fields = ('email',)
 
-class SignUpForm(forms.Form):
+class RegistrationForm(UserCreationForm):
+	email = forms.EmailField(max_length=254, help_text='Required. Add a valid email address.')
 
-    name = forms.CharField(max_length=100)
-    email = forms.EmailField()
-    password = forms.CharField(widget = forms.PasswordInput())
-    retype_password = forms.CharField(widget = forms.PasswordInput())
+	class Meta:
+		model = CustomUser
+		fields = ('email', 'username', 'password1', 'password2', )
 
-class UserCreationForm(UserCreationForm):
-    email = EmailField(label=_("Email address"), required=True,
-        help_text=_("Required."))
+	def clean_email(self):
+		email = self.cleaned_data['email'].lower()
+		try:
+			account = CustomUser.objects.exclude(pk=self.instance.pk).get(email=email)
+		except CustomUser.DoesNotExist:
+			return email
+		raise forms.ValidationError('Email "%s" is already in use.' % CustomUser)
 
-    class Meta:
-        model = User
-        fields = ("username", "email", "password1", "password2")
-
-    def save(self, commit=True):
-        user = super(UserCreationForm, self).save(commit=False)
-        user.email = self.cleaned_data["email"]
-        if commit:
-            user.save()
-        return user 
+	def clean_username(self):
+		username = self.cleaned_data['username']
+		try:
+			account = CustomUser.objects.exclude(pk=self.instance.pk).get(username=username)
+		except CustomUser.DoesNotExist:
+			return username
+		raise forms.ValidationError('Username "%s" is already in use.' % username)
