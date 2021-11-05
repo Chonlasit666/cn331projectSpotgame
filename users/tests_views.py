@@ -13,13 +13,13 @@ class UserTestCase(TestCase):
         user = User.objects.create(email="brave@test.com",username='brave', password=password)
 
     def test_guest_index_view(self):
-        response = self.client.get(reverse('users:index'))
+        response = self.client.get(reverse('smg:index'))
         self.assertRedirects(response, reverse('users:login'))
 
     def test_authenticated_user_index_view(self):
         self.client.login(username='brave@test.com', password='somepass@brave')
 
-        response = self.client.get(reverse('users:index'))
+        response = self.client.get(reverse('smg:index'))
         self.assertEqual(response.status_code, 200)
 
     def test_login_view(self):

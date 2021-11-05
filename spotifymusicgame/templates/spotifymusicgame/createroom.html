@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <title>Create room</title>
-<head>
-    <h1>Test CreateRoom</h1>
-</head>
+    <title>Create Room</title>
+<form action="{% url 'smg:createroom' %}" method="post">
+    {% csrf_token %}
+
+    <head>Settings</head>
 <body>
-    <form action="{% url 'createroom' %}" method="post" >
-        {% csrf_token %}
-    <input type="text" name="texttxt">
-    <button type="submit">submit</button>
-        <p>{{data}}</p>
+
+    <input type ="text" name="Max_player">Max Player</input>
+    <input type ="text" name="URI">URI</input>
+    <button type="submit">Create Room</button>
+
+    {{ID}}
+ 
 </body>
 </html>
