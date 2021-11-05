@@ -34,7 +34,7 @@ def logout_view(request):
 def register_view(request, *args, **kwargs):
     user = request.user
     if user.is_authenticated:
-        return HttpResponse("You are already authenticated as " + str(user.email))
+        return HttpResponseRedirect(reverse('smg:index'))
 
     context = {}
     if request.POST:
@@ -48,7 +48,7 @@ def register_view(request, *args, **kwargs):
             destination = kwargs.get("next")
             if destination:
                 return redirect(destination)
-            return redirect('home')
+            return redirect('users:login')
         else:
             context['registration_form'] = form
 
