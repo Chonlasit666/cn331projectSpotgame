@@ -71,5 +71,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def users(self):
-        Subject.objects.create(pk= "test")
-        return Subject.objects.get(pk= "cn200").subject_id
+        #Subject.objects.create(pk= "test")
+        #return Subject.objects.get(pk= "cn200").subject_id
+        pass

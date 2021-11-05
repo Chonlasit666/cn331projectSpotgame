@@ -4,13 +4,8 @@ from spotipy.oauth2 import SpotifyClientCredentials
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="ffc4c1c607de49489dc5b071b326727e",
                                                            client_secret="4fd9dfe58f914768b24a034e1da88c2b"))
 
-<<<<<<< HEAD
 song = sp.track('spotify:track:4KJQkJSDOvQtSDf9rRn25n')
 print(song['preview_url'])
-=======
-# song = sp.track('spotify:track:4KJQkJSDOvQtSDf9rRn25n')
-# print(song['preview_url'])
->>>>>>> main
 
 playlist_uri = sp.playlist('spotify:playlist:4taxX9mVX4deBsqG6ffEbP')
 # dict_keys(['collaborative', 'description', 'external_urls', 'followers', 'href', 'id', 'images', 'name', 'owner', 'primary_color', 'public', 'snapshot_id', 'tracks', 'type', 'uri']) ของplaylist

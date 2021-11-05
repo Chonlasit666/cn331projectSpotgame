@@ -26,11 +26,7 @@
     <input id="chat-message-submit" type="button" value="Send">
     {{ room_name|json_script:"room-name" }}
     {{ request.user.username|json_script:"user_username" }}     
-<<<<<<< HEAD
     <p1><a href="{% url 'index' %}">Return</a></1p>
-=======
-    <p1><a href="{% url 'users:index' %}">Return</a></1p>
->>>>>>> main
     <script>
 
         var x = document.getElementById("myAudio"); 

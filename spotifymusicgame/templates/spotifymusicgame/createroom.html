@@ -5,40 +5,10 @@
     <h1>Test CreateRoom</h1>
 </head>
 <body>
-<<<<<<< HEAD
     <form action="{% url 'createroom' %}" method="post" >
         {% csrf_token %}
     <input type="text" name="texttxt">
     <button type="submit">submit</button>
         <p>{{data}}</p>
-=======
-    <form action="{% url 'smg:create_room_detial' %}" method="post" >
-    {% csrf_token %}
-    <input type="text" name="texttxt">
-    <button type="submit">submit</button>
-    
-    <script>
-    const xhr = new XMLHttpRequest()
-    const method = 'GET'
-    const url = "createroom/detial"
-    const responseType = "json"
-
-    xhr.responseType = responseType
-    xhr.open(method, url)
-    xhr.onload = function() {
-        const serverResponse = xhr.response
-        var listedItems = serverResponse.response
-        var i;
-        for (i = 0; i < listedItems.length; i++) {
-            console.log(i)
-            console.log(listedItems[i])
-        }
-    }
-    xhr.send()
-
-
-
-    </script>
->>>>>>> main
 </body>
 </html>
