@@ -2,12 +2,12 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from .forms import CustomUserCreationForm, CustomUserChangeForm
+from .forms import UserCreationForm, CustomUserChangeForm
 from .models import CustomUser, FriendList, FriendRequest
 
 
 class CustomUserAdmin(UserAdmin):
-    add_form = CustomUserCreationForm
+    add_form = UserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
     list_display = ('email', 'is_staff', 'is_active',)
