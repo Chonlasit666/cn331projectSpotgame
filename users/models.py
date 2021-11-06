@@ -6,6 +6,7 @@ from django.utils import timezone
 
 from .managers import CustomUserManager
 
+
 class CustomUser(AbstractUser):
     username = models.CharField(max_length=16)
     email = models.EmailField(_('email address'), unique=True)
