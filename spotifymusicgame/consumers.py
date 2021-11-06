@@ -1,7 +1,6 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from .models import roomInfo
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
@@ -56,4 +55,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def max_users(self):
         max_user = roomInfo.objects.get(id=1).max_player
         return max_user
-    
+        
+from .models import roomInfo

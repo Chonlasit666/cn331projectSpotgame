@@ -28,9 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
-
-DJANGO_ALLOW_ASYNC_UNSAFE=True
 
 # Application definition
 
