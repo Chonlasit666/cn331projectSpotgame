@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_extensions',
     'channels',
-    'spotifymusicgame',
+    'spotifymusicgame.apps.UsersConfig',
     'users',
 
 ]
