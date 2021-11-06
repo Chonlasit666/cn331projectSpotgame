@@ -145,7 +145,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ASGI_APPLICATION = "spotgame.asgi.application"
-'''
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
@@ -163,6 +163,6 @@ CHANNEL_LAYERS = {
         },
     },
 }
-
+'''
 
 AUTH_USER_MODEL = 'users.CustomUser'

@@ -8,21 +8,43 @@
     
     <h1>Song : {{name}}</h1>
     <h1>Artist: {{artist}}</h1>
-    <img src={{pic}} alt="Trulli" width="300" height="300">
+    <img id="img" src={{pic}} alt="Trulli" width="300" height="300">
 
     <p>
-        <audio controls autoplay>
-            <source src={{url}} type="audio/mpeg">
+        <audio id="myAudio" controls  onended="nextAudio()">
+
         </audio>
     </p>
+
+    <input id="Ready" type="button" value="Ready" style="display:block;">
+
     <h1>Welcome User : {{request.user.username}}</h1>
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
     {{ room_name|json_script:"room-name" }}
-    {{ request.user.username|json_script:"user_username" }}
+    {{ request.user.username|json_script:"user_username" }}     
     <p1><a href="{% url 'smg:index' %}">Return</a></1p>
     <script>
+        
+
+        var audio = document.getElementById("myAudio"); 
+        var y  = ["https://p.scdn.co/mp3-preview/08d6bfd37e740e3a303efa75b45f1d37b5801b70?cid=ffc4c1c607de49489dc5b071b326727e ", "https://p.scdn.co/mp3-preview/b7041e6e20b4268e88d9318c4c8a7b845bd5d491?cid=ffc4c1c607de49489dc5b071b326727e ", "https://p.scdn.co/mp3-preview/8f47182d861bbca0a9d7f9780a2f12ac6cbd6794?cid=ffc4c1c607de49489dc5b071b326727e "];
+
+        var i = 0;
+        audio.volume = 0.2;
+        audio.src = y[i];
+
+        function nextAudio() { 
+            var img = document.getElementById('img').src = "https://i.scdn.co/image/ab67616d0000b273f4b17642775c56da605929f1"
+            i++;
+            audio.pause();
+            audio.src = y[i];
+            audio.load(); 
+            audio.play();
+        } 
+
+
         const user_username = JSON.parse(document.getElementById('user_username').textContent);
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const chatSocket = new WebSocket(
@@ -32,10 +54,18 @@
             + roomName
             + '/'
         );
+        
 
+        /*receive message from backend*/
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
+            if("play" === data.action){
+                audio.play();
+            }
+            else if("chat" === data.action){
+                document.querySelector('#chat-log').value += (data.username + ': ' + data.message  + '\n');
+            }
+
         };
 
         chatSocket.onclose = function(e) {
@@ -55,9 +85,21 @@
             chatSocket.send(JSON.stringify({
                 'message': message,
                 'username': user_username,
+                'action' : "chat",
             }));
             messageInputDom.value = '';
         };
+
+        document.querySelector('#Ready').onclick = function(e) {
+            document.getElementById("Ready").style.display = "none" ;
+            const message = false;
+            chatSocket.send(JSON.stringify({
+                'username': user_username,
+                'send' : message ,
+                'action' : "ready",
+            }));
+        };
+
     </script>
 </body>
 </html>
