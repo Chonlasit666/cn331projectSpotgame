@@ -32,8 +32,6 @@ def room(request, room_name):
 
 def about(request):
     return render(request, 'spotifymusicgame/aboutme.html')
-
-'''
 def create_room_view(request):
     ID = None
     if request.method == "POST":
@@ -47,31 +45,3 @@ def create_room_view(request):
         return HttpResponseRedirect(reverse("smg:room", args = (room_name,)))
 
     return render(request, 'spotifymusicgame/createroom.html')
-
-def create_room_detial_view(request):
-    """
-    qs = songModel.objects.all()
-    song_list = [{"artist": x.artist, "image": x.image, "song": x.song, "uri": x.uri} for x in qs]
-    data = {
-        "response": song_list
-    }
-    return JsonResponse(data)
-    """
-    data = {}
-    if request.method == "POST":
-        a = request.POST['texttxt']
-        if not playList.objects.filter(url=a).exists():
-            playList.objects.create(url=a)
-        qs = songModel.objects.filter(playlist__url=a)
-        song_list = [{"artist": x.artist, "image": x.image,
-                      "song": x.song, "uri": x.uri} for x in qs]
-
-        data = {
-            "response": song_list
-        }
-        print(data)
-    return render(request, 'spotifymusicgame/createroom.html',{
-        "data": data
-        }
-    )
-'''
