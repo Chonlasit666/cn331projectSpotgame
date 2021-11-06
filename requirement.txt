@@ -1,8 +1,6 @@
 asgiref==3.4.1
 autopep8==1.5.7
 coverage==6.0.2
-channels==3.0.4
-channels-redis==3.3.1
 Django==3.2.8
 django-cors-headers==3.10.0
 django-extensions==3.1.3
