@@ -11,7 +11,7 @@ class songModel(models.Model):
     artist = models.CharField(max_length=100)
     image = models.CharField(max_length=255)
     song = models.CharField(max_length=255)
-    uri = models.CharField(max_length=255)
+    uri = models.CharField(max_length=255,null=True, blank=True)
 
     def __str__(self):
         return self.song + " by " + self.artist
