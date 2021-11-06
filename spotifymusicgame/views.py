@@ -19,7 +19,7 @@ def index(request):
     else:
         return render(request, "spotifymusicgame/index.html")
 
-def room(request, room_name):
+async def room(request, room_name):
     track = sp.track('spotify:track:6IG5ZOKnUryCcsvzopK23A')
     return render(request, 'spotifymusicgame/room.html', {
         'room_name': room_name,
