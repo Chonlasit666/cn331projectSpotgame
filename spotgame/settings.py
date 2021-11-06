@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'channels',
     'spotifymusicgame.apps.SpotifymusicgameConfig',
-    'users',
+    'users.apps.UsersConfig',
 
 ]
 
