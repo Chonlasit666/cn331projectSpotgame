@@ -2,17 +2,13 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
-<style type="text/css">
-    body {
-        overflow: hidden;
-    }
-</style>
+
 
 <head>
     <title>Enter Chat Room</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="{%static 'styles/navbar.css' %}">
+
     <link rel="icon" type="image/png" href="{%static 'login/images/icons/spotify-logo.png' %}" />
     <link rel="stylesheet" type="text/css" href="{%static 'login/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{%static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
@@ -22,13 +18,6 @@
 </head>
 
 <body>
-    <div class="topnav">
-        <a class="active" href="{% url 'smg:index' %}">Home</a>
-        <a href="{% url 'smg:aboutme' %} " target="_blank">About</a>
-        <a href="{% url 'smg:createroom' %} "> Create Room </a>
-        <a class="active" href="{% url 'users:logout' %}" , style="float: right;">Logout</a>
-    </div>
-
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-enter-room p-l-85 p-r-85 p-t-55 p-b-55">
@@ -40,7 +29,7 @@
                     <input class="input100" type="text" id="room-name-input">
                     <span class="focus-input100"></span>
                 </div>
-
+    
                 <div class="room-container-login100-form-btn">
                     <button input class="login100-form-btn" type="submit" id="room-name-submit">
                         Enter
@@ -48,10 +37,9 @@
                 </div>
                 <br>
                 <div style="text-align:center">
-                    <span style="float:left;"><a href="{% url 'smg:aboutme' %}" class="txt3">About us</a></span>
-                    <span style="float:right;"><a href="{% url 'smg:createroom' %}" class="txt3">Create Room</a></span>
+                    <span style="float:left;"><a href="{% url 'smg:aboutme' %}">About us</a></span>
+                    <span style="float:right;"><a href="{% url 'users:logout' %}">Logout</a></span>
                 </div>
-                <br><br>
                 <script>
                     document.querySelector('#room-name-input').focus();
                     document.querySelector('#room-name-input').onkeyup = function (e) {
@@ -62,7 +50,7 @@
 
                     document.querySelector('#room-name-submit').onclick = function (e) {
                         var roomName = document.querySelector('#room-name-input').value;
-                        window.location.pathname = '(%3FP' + roomName + '%5cd+)/$';
+                        window.location.pathname = '/spotifymusicgame/' + roomName + '/';
                     };
                 </script>
             </div>
