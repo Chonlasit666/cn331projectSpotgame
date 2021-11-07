@@ -49,7 +49,9 @@ class playListTest(TestCase):
         self.assertTrue(song)
 
     def test_add_track_song_list(self):
-        playlist = playList.objects.get(pk=1)
+        playlist = playList.objects.create(
+            url='spotify:playlist:1mDavOft783W3vv8sgeo0B')
+        playlist.create_track()
         playlist.add_track_song_list()
         qs = songModel.objects.filter(playlist__url=playlist.url).exists()
         self.assertTrue(qs)
