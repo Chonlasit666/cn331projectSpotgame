@@ -16,6 +16,8 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -122,6 +124,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Celery Configuration Options
+CELERY_TIMEZONE = "Australia/Tasmania"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -145,7 +152,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ASGI_APPLICATION = "spotgame.asgi.application"
-'''
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
@@ -153,7 +160,7 @@ CHANNEL_LAYERS = {
 }
 '''
 
-#ASGI_APPLICATION = "spotgame.routing.application"
+ASGI_APPLICATION = "spotgame.routing.application"
 
 CHANNEL_LAYERS = {
     "default": {
@@ -163,6 +170,6 @@ CHANNEL_LAYERS = {
         },
     },
 }
-
+'''
 
 AUTH_USER_MODEL = 'users.CustomUser'
