@@ -3,6 +3,7 @@ from django.conf import settings
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
+
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="ffc4c1c607de49489dc5b071b326727e",
                                                            client_secret="4fd9dfe58f914768b24a034e1da88c2b"))
 
@@ -11,7 +12,7 @@ class songModel(models.Model):
     artist = models.CharField(max_length=100)
     image = models.CharField(max_length=255)
     song = models.CharField(max_length=255)
-    uri = models.CharField(max_length=255)
+    uri = models.CharField(max_length=255,null=True,blank=True)
 
     def __str__(self):
         return self.song + " by " + self.artist

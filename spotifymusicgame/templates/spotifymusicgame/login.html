@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
     <link rel="stylesheet" href ="{% static 'css/loginstyle.css' %}">
-        <form action="{% url 'smg:login' %}" method="post" >
+        <form action="{% url 'login' %}" method="post" >
             {% csrf_token %}
             <div class="form">
                 <div class = "message">
