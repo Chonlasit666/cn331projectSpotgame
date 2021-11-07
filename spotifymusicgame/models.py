@@ -1,114 +1,66 @@
-import json
-from typing import Counter
-from channels.generic.websocket import AsyncWebsocketConsumer
-from asgiref.sync import sync_to_async
-from channels.db import database_sync_to_async
-from .models import roomInfo
-class ChatConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'chat_%s' % self.room_name
+from django.db import models
+from django.conf import settings
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 
-        # Join room group
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
-
-        await self.accept()
-
-    async def disconnect(self, close_code):
-        # Leave room group
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
-
-    # Receive message from WebSocket
-    async def receive(self, text_data):
-
-        text_data_json = json.loads(text_data)
-        username = text_data_json['username']
-        action = text_data_json['action']
-        print("recive")
-
-        if action == "chat" :
-            message = text_data_json['message']
-            # Send message to room group
-            await self.channel_layer.group_send(
-                self.room_group_name,
-            {
-                    'type': 'chat_message',
-                    'message': message,
-                    'username': username,
-                    'action' : action,
-                }
-            )
-        
-        elif action == "ready":
-            await self.ready_users()
-            # Send status to room group
-            await self.channel_layer.group_send(
-                self.room_group_name,
-            {
-                    'type': 'ready',
-                    'username': username,
-                    'action' : action,
-                }
-            )
-
-    # Receive message from room group
-    async def chat_message(self, event):
-        message = event['message']
-        username = event['username']
-        action = event['action']
-        
-        # Send message to WebSocket
-        await self.send(text_data=json.dumps({
-            'message': message,
-            'username': username,
-            'action': action,
-        }))
-
-    #--------------------------------------------------
-    # Receive message from room group
-    async def ready(self, event):
-        username = event['username']
-        action = event['action']
-        
-        #print("receive" + action)
-        max_user = await self.max_users()
-        ready_user = await self.play()
-        print(ready_user)
-        #print(ready_user)
-        if max_user <= ready_user :
-            print("test play")
-            action = "play"
-
-        # Send message to WebSocket
-        await self.send(text_data=json.dumps({
-            'username': username,
-            'action': action,
-        }))
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="ffc4c1c607de49489dc5b071b326727e",
+                                                           client_secret="4fd9dfe58f914768b24a034e1da88c2b"))
 
 
-        
-    @database_sync_to_async
-    def max_users(self):
-        max_user = roomInfo.objects.get(id=1).max_player
-        return max_user
+class songModel(models.Model):
+    artist = models.CharField(max_length=100)
+    image = models.CharField(max_length=255)
+    song = models.CharField(max_length=255)
+    uri = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.song + " by " + self.artist
 
 
-    @database_sync_to_async
-    def ready_users(self):
-        room_id =  self.room_name = self.scope['url_route']['kwargs']['room_name']
-        update = roomInfo.objects.get(id=room_id)
-        update.ready_player = update.ready_player + 1
-        update.save()
+class playList(models.Model):
+    url = models.URLField(max_length=255, blank=False, null=False, unique=True)
+    song_list = models.ManyToManyField(songModel, related_name="playlist")
+    count = models.IntegerField(default=0)
 
-    @database_sync_to_async
-    def play(self):
-        room_id =  self.room_name = self.scope['url_route']['kwargs']['room_name']
-        current_user = roomInfo.objects.get(id=room_id).ready_player
- 
-        return current_user
+    def get_info(self):
+        playlist = sp.playlist(self.url)
+        return playlist
+
+    def create_track(self):
+        playlist_uri = self.get_info()
+        a = playlist_uri['tracks']['items']
+        for i in a:
+            if not songModel.objects.filter(song=i['track']['name']).exists():
+                song = songModel.objects.create(artist=i['track']['artists'][0]['name'],
+                                                image=i['track']['album']['images'][0]['url'],
+                                                song=i['track']['name'],
+                                                uri=i['track']['preview_url'])
+
+    def add_track_song_list(self):
+        playlist_uri = self.get_info()
+        a = playlist_uri['tracks']['items']
+        for i in a:
+            song = songModel.objects.get(song=i['track']['name'])
+            self.song_list.add(song)
+        self.save()
+
+    def __str__(self):
+        return self.url
+
+
+class roomInfo(models.Model):
+    player = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, null=True, blank=True)
+    url = models.ForeignKey(playList, on_delete=models.CASCADE)
+    ready_player = models.IntegerField(default=0)
+    max_player = models.IntegerField(default=8)
+    max_song = models.IntegerField(default=10)
+    guess_time = models.IntegerField(default=15)
+
+
+class played(models.Model):
+    played = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    score = models.IntegerField(default=0)
+    room = models.ForeignKey(roomInfo, on_delete=models.CASCADE)
+    max_score = models.IntegerField(default=10)
