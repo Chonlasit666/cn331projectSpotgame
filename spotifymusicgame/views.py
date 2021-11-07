@@ -1,11 +1,11 @@
 from django.http.response import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
-
-
+from django.core import serializers
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from .models import *
+
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
@@ -20,6 +20,26 @@ def index(request):
         return render(request, "spotifymusicgame/index.html")
 
 def room(request, room_name):
+    
+    songs = []
+    artists = []
+    images = []
+    uris = []
+
+    count = 0
+    for i in songModel.objects.filter(playlist__url=roomInfo.objects.get(id = room_name).url):
+        songs.append(str(i.song).replace("'",""))
+        artists.append(str(i.artist).replace("'",""))
+        images.append(str(i.image).replace("'",""))
+        uris.append(str(i.uri).replace("'",""))
+
+
+    song_json = json.dumps(songs)
+    artist_json = json.dumps(artists)
+    image_json = json.dumps(images)
+    uri_json = json.dumps(uris)
+
+
     track = sp.track('spotify:track:6IG5ZOKnUryCcsvzopK23A')
     return render(request, 'spotifymusicgame/room.html', {
         'room_name': room_name,
@@ -27,21 +47,63 @@ def room(request, room_name):
         "artist": track['artists'][0]['name'],
         "pic": track['album']['images'][0]['url'],
         "url": track['preview_url'],
+        'songs' : song_json,
+        'artists' : artist_json,
+        'images' : image_json,
+        'uris' : uri_json,
     })
 
 
 def about(request):
     return render(request, 'spotifymusicgame/aboutme.html')
+
+
 def create_room_view(request):
     ID = None
     if request.method == "POST":
-        URI_ = request.POST['URI']
-        Max_player = request.POST['Max_player']
-        if not playList.objects.filter(url=URI_).exists():
-            playList.objects.create(url=URI_)
-        this_playlist = playList.objects.get(url = URI_)
-        this_room = roomInfo.objects.create(url = this_playlist , max_player = Max_player)
-        room_name = this_room.id
-        return HttpResponseRedirect(reverse("smg:room", args = (room_name,)))
+        try:
+
+            URI_ = request.POST['URI']
+            Max_player = request.POST['Max_player']
+            if not playList.objects.filter(url=URI_).exists():
+                playList.objects.create(url=URI_)
+            this_playlist = playList.objects.get(url = URI_)
+            this_room = roomInfo.objects.create(url = this_playlist , max_player = Max_player)
+            room_name = this_room.id
+            return HttpResponseRedirect(reverse("smg:room", args = (room_name,)))
+
+        except:
+            return render(request, 'spotifymusicgame/createroom.html')
 
     return render(request, 'spotifymusicgame/createroom.html')
+
+
+
+"""
+def create_room_detial_view(request):
+    
+    qs = songModel.objects.all()
+    song_list = [{"artist": x.artist, "image": x.image, "song": x.song, "uri": x.uri} for x in qs]
+    data = {
+        "response": song_list
+    }
+    return JsonResponse(data)
+    
+    data = {}
+    if request.method == "POST":
+        a = request.POST['texttxt']
+        if not playList.objects.filter(url=a).exists():
+            playList.objects.create(url=a)
+        qs = songModel.objects.filter(playlist__url=a)
+        song_list = [{"artist": x.artist, "image": x.image,
+                      "song": x.song, "uri": x.uri} for x in qs]
+
+        data = {
+            "response": song_list
+        }
+        print(data)
+    return render(request, 'spotifymusicgame/createroom.html',{
+        "data": data
+        }
+    )
+"""
