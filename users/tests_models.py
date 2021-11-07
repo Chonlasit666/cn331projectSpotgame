@@ -48,6 +48,10 @@ class FriendListTest(TestCase):
         fl stand for friendslist
     """
 
+    def test_return_FriendList(self):
+        fl1 = FriendList.objects.get(pk=1)
+        self.assertEquals(fl1.user.email, str(fl1))
+
     def test_add_friend(self):
         """
         fl3 must increase
