@@ -113,4 +113,3 @@ class ChatConsumer(AsyncWebsocketConsumer):
         current_user = roomInfo.objects.get(id=room_id).ready_player
  
         return current_user
-            
