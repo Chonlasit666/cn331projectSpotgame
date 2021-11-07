@@ -125,9 +125,6 @@ USE_L10N = True
 USE_TZ = True
 
 # Celery Configuration Options
-CELERY_TIMEZONE = "Australia/Tasmania"
-CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_TIME_LIMIT = 30 * 60
 
 
 # Static files (CSS, JavaScript, Images)
@@ -152,7 +149,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ASGI_APPLICATION = "spotgame.asgi.application"
-
+'''
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
@@ -170,6 +167,6 @@ CHANNEL_LAYERS = {
         },
     },
 }
-'''
+
 
 AUTH_USER_MODEL = 'users.CustomUser'
