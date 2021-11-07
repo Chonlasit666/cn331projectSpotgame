@@ -8,7 +8,7 @@
     
     <h1>Song : {{name}}</h1>
     <h1>Artist: {{artist}}</h1>
-    <img src={{pic}} alt="Trulli" width="300" height="300">
+    <img id="img" src={{pic}} alt="Trulli" width="300" height="300">
 
     <p>
         <audio id="myAudio" controls  onended="nextAudio()">
@@ -18,8 +18,6 @@
 
     <input id="Ready" type="button" value="Ready" style="display:block;">
 
-    <p id="demo"></p>
-
     <h1>Welcome User : {{request.user.username}}</h1>
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
@@ -28,27 +26,22 @@
     {{ request.user.username|json_script:"user_username" }}     
     <p1><a href="{% url 'smg:index' %}">Return</a></1p>
     <script>
+        
 
-        var x = document.getElementById("myAudio"); 
+        var audio = document.getElementById("myAudio"); 
         var y  = ["https://p.scdn.co/mp3-preview/08d6bfd37e740e3a303efa75b45f1d37b5801b70?cid=ffc4c1c607de49489dc5b071b326727e ", "https://p.scdn.co/mp3-preview/b7041e6e20b4268e88d9318c4c8a7b845bd5d491?cid=ffc4c1c607de49489dc5b071b326727e ", "https://p.scdn.co/mp3-preview/8f47182d861bbca0a9d7f9780a2f12ac6cbd6794?cid=ffc4c1c607de49489dc5b071b326727e "];
 
         var i = 0;
-        var t = 0;
-        var state = false;
-        x.src = y[i];
-
-        function test() { 
-            t = t + 1;
-            document.getElementById("demo").innerHTML = t;
-
-        }
+        audio.volume = 0.2;
+        audio.src = y[i];
 
         function nextAudio() { 
+            var img = document.getElementById('img').src = "https://i.scdn.co/image/ab67616d0000b273f4b17642775c56da605929f1"
             i++;
-            x.pause();
-            x.src = y[i];
-            x.load(); 
-            x.play();
+            audio.pause();
+            audio.src = y[i];
+            audio.load(); 
+            audio.play();
         } 
 
 
@@ -61,14 +54,16 @@
             + roomName
             + '/'
         );
+        
 
+        /*receive message from backend*/
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             if("play" === data.action){
-                x.play();
+                audio.play();
             }
-            else if("message" === data.action){
-                document.querySelector('#chat-log').value += (data.username + ': ' + data.message + ': ' + data.action + '\n');
+            else if("chat" === data.action){
+                document.querySelector('#chat-log').value += (data.username + ': ' + data.message  + '\n');
             }
 
         };
@@ -90,18 +85,18 @@
             chatSocket.send(JSON.stringify({
                 'message': message,
                 'username': user_username,
-                'action' : "message",
+                'action' : "chat",
             }));
             messageInputDom.value = '';
         };
 
         document.querySelector('#Ready').onclick = function(e) {
             document.getElementById("Ready").style.display = "none" ;
-            const message = null;
+            const message = false;
             chatSocket.send(JSON.stringify({
-                'message': message,
                 'username': user_username,
-                'action' : "play",
+                'send' : message ,
+                'action' : "ready",
             }));
         };
 

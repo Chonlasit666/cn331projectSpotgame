@@ -52,6 +52,7 @@ class roomInfo(models.Model):
     player = models.ManyToManyField(
         settings.AUTH_USER_MODEL, null=True, blank=True)
     url = models.ForeignKey(playList, on_delete=models.CASCADE)
+    ready_player = models.IntegerField(default=0)
     max_player = models.IntegerField(default=8)
     max_song = models.IntegerField(default=10)
     guess_time = models.IntegerField(default=15)
