@@ -55,6 +55,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     
     @database_sync_to_async
     def max_users(self):
-        update = roomInfo.objects.get(id=1)
-        return update
+        max_user = roomInfo.objects.get(id=1).max_player
+        return max_user
     
