@@ -66,6 +66,19 @@ class UserRegistrationTestCase(TestCase):
             'password1': '135798642Aa',
             'password2': '135798642Aa'
         }
+        password = make_password('somepass@brave')
+        User = get_user_model()
+        User.objects.create(
+            email="brave@test.com", username='brave', password=password)
+
+    """
+    Test view SignUp page
+    """
+
+    def test_autenticate_cant_view_register_view(self):
+        self.client.login(username='brave@test.com', password='somepass@brave')
+        response = self.client.get(reverse('users:register'))
+        self.assertRedirects(response, reverse('smg:index'))
 
     def test_signup_page_url(self):
         response = self.client.get("/users/register/")
@@ -93,46 +106,50 @@ class UserRegistrationTestCase(TestCase):
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), 'Invalid credential.')
 
+    """
+    Test passing context to form
+    """
+
     def test_user_used_username(self):
-        self.userusedusername = {
+        userusedusername = {
             'username': 'jj',
             'email': 'jj1@test.com',
             'password1': '135798642Aa',
             'password2': '135798642Aa'
         }
         response = self.client.post(
-            '/users/register/', self.userusedusername, format='text/html')
+            '/users/register/', userusedusername, format='text/html')
         self.assertEqual(response.status_code, 302)
 
     def test_user_used_email(self):
-        self.userusedemail = {
+        userusedemail = {
             'username': 'jj1',
             'email': 'jj@test.com',
             'password1': '135798642Aa',
             'password2': '135798642Aa'
         }
         response = self.client.post(
-            '/users/register/', self.userusedemail, format='text/html')
+            '/users/register/', userusedemail, format='text/html')
         self.assertEqual(response.status_code, 302)
-    
+
     def test_user_password_not_match(self):
-        self.passwordnotmatch = {
+        passwordnotmatch = {
             'username': 'jj2',
             'email': 'jj2@test.com',
             'password1': '123456789',
             'password2': '123456'
         }
         response = self.client.post(
-            '/users/register/', self.passwordnotmatch, format='text/html')
+            '/users/register/', passwordnotmatch, format='text/html')
         self.assertEqual(response.status_code, 200)
 
     def test_user_wrong_email_format(self):
-        self.wrongemail = {
+        wrongemail = {
             'username': 'jj3',
             'email': 'jj2',
             'password1': '123456789',
             'password2': '123456789'
         }
         response = self.client.post(
-            '/users/register/', self.wrongemail, format='text/html')
+            '/users/register/', wrongemail, format='text/html')
         self.assertEqual(response.status_code, 200)

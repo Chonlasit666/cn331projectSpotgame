@@ -167,8 +167,8 @@ class FriendListTest(TestCase):
         fl1 = FriendList.objects.get(pk=1)
         u2 = get_user_model().objects.get(pk=2)
 
-        self.assertTrue(fl1.is_mutual_friends(u2))
-    
+        self.assertEqual(True,fl1.is_mutual_friends(u2))
+
     def Test_is_not_mutual_friend(self):
         """
         SAY NO!!!
@@ -176,4 +176,37 @@ class FriendListTest(TestCase):
         fl1 = FriendList.objects.get(pk=1)
         u3 = get_user_model().objects.get(pk=3)
 
-        self.assertFalse(fl1.is_mutual_friends(u3))
+        self.assertEqual(False,fl1.is_mutual_friends(u3))
+
+
+class FriendRequestTest(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        self.u1 = User.objects.create_user(
+            email='brave@user.com', username='brave', password='foo')
+        self.u2 = User.objects.create_user(
+            email='jj@user.com', username='jj', password='foo')
+
+        self.fl1 = FriendList.objects.create(user=self.u1)
+        self.fl2 = FriendList.objects.create(user=self.u2)
+
+        self.obj = FriendRequest.objects.create(
+            sender=self.u1, receiver=self.u2)
+
+    def test_return_FriendRequest(self):
+        self.assertEqual(self.obj.sender.email, str(self.obj))
+
+    def test_accept(self):
+        self.obj.accept()
+        self.assertFalse(self.obj.is_active)
+        self.assertEqual(1,self.fl1.friends.count())
+        self.assertEqual(1, self.fl2.friends.count())
+
+    def test_decline(self):
+        self.obj.decline()
+        self.assertFalse(self.obj.is_active)
+
+    def test_cancel(self):
+        self.obj.cancel()
+        self.assertFalse(self.obj.is_active)
