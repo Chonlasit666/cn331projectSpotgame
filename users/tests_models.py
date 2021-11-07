@@ -112,17 +112,17 @@ class FriendListTest(TestCase):
         self.assertEqual(fl1.friends.count(), 0)
         self.assertEqual(fl2.friends.count(), 0)
 
-    def Test_cannot_unfriend(self):
+    def test_cannot_unfriend(self):
         """
         friendlistOne mustn't have any change in it
         """
         fl1 = FriendList.objects.get(pk=1)
-        u3 = get_user_model.objects.get(pk=3)
+        u3 = get_user_model().objects.get(pk=3)
 
         fl1.unfriend(u3)
         self.assertNotEqual(fl1.friends.count(), 0)
 
-    def Test_is_mutual_friend(self):
+    def test_is_mutual_friend(self):
         """
         SAY YES THEY'RE FRIEND!!
         """
@@ -131,7 +131,7 @@ class FriendListTest(TestCase):
 
         self.assertEqual(True, fl1.is_mutual_friends(u2))
 
-    def Test_is_not_mutual_friend(self):
+    def test_is_not_mutual_friend(self):
         """
         SAY NO!!!
         """
