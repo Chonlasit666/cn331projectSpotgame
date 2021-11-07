@@ -81,6 +81,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         max_user = await self.max_users()
         ready_user = await self.play()
         print(ready_user)
+        print(max_user)
         #print(ready_user)
         if max_user <= ready_user :
             print("test play")
@@ -96,7 +97,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
     @database_sync_to_async
     def max_users(self):
-        max_user = roomInfo.objects.get(id=1).max_player
+        room_id =  self.room_name = self.scope['url_route']['kwargs']['room_name']
+        max_user = roomInfo.objects.get(id=room_id).max_player
         return max_user
 
 

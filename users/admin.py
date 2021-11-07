@@ -7,7 +7,7 @@ from .models import CustomUser, FriendList, FriendRequest
 
 
 class CustomUserAdmin(UserAdmin):
-    add_form = CustomUserCreationForm
+    add_form =CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
     list_display = ('email', 'is_staff', 'is_active',)
