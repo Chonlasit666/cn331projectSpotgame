@@ -22,7 +22,6 @@ class playList(models.Model):
     url = models.URLField(max_length=255, blank=False, null=False, unique=True)
     song_list = models.ManyToManyField(songModel, related_name="playlist")
     count = models.IntegerField(default=0)
-    print("sdasdasdasdasd")
 
     def get_info(self):
         playlist = sp.playlist(self.url)

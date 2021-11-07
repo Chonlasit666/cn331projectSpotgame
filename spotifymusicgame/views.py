@@ -21,37 +21,40 @@ def index(request):
 
 def room(request, room_name):
     
-    songs = []
-    artists = []
-    images = []
-    uris = []
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("users:login"))
+    else:
+        songs = []
+        artists = []
+        images = []
+        uris = []
 
-    count = 0
-    for i in songModel.objects.filter(playlist__url=roomInfo.objects.get(id = room_name).url):
-        songs.append(str(i.song).replace("'",""))
-        artists.append(str(i.artist).replace("'",""))
-        images.append(str(i.image).replace("'",""))
-        uris.append(str(i.uri).replace("'",""))
-
-
-    song_json = json.dumps(songs)
-    artist_json = json.dumps(artists)
-    image_json = json.dumps(images)
-    uri_json = json.dumps(uris)
+        count = 0
+        for i in songModel.objects.filter(playlist__url=roomInfo.objects.get(id = room_name).url):
+            songs.append(str(i.song).replace("'",""))
+            artists.append(str(i.artist).replace("'",""))
+            images.append(str(i.image).replace("'",""))
+            uris.append(str(i.uri).replace("'",""))
 
 
-    track = sp.track('spotify:track:6IG5ZOKnUryCcsvzopK23A')
-    return render(request, 'spotifymusicgame/room.html', {
-        'room_name': room_name,
-        "name": track['name'],
-        "artist": track['artists'][0]['name'],
-        "pic": track['album']['images'][0]['url'],
-        "url": track['preview_url'],
-        'songs' : song_json,
-        'artists' : artist_json,
-        'images' : image_json,
-        'uris' : uri_json,
-    })
+        song_json = json.dumps(songs)
+        artist_json = json.dumps(artists)
+        image_json = json.dumps(images)
+        uri_json = json.dumps(uris)
+
+
+        track = sp.track('spotify:track:6IG5ZOKnUryCcsvzopK23A')
+        return render(request, 'spotifymusicgame/room.html', {
+            'room_name': room_name,
+            "name": track['name'],
+            "artist": track['artists'][0]['name'],
+            "pic": track['album']['images'][0]['url'],
+            "url": track['preview_url'],
+            'songs' : song_json,
+            'artists' : artist_json,
+            'images' : image_json,
+            'uris' : uri_json,
+        })
 
 
 def about(request):
