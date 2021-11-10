@@ -55,6 +55,14 @@
                         <span class="focus-input100"></span>
                     </div>
 
+                    {% if messages %}
+                    <ul class="messages" style="color: red">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                            {% endfor %}
+                    </ul>
+                    {% endif %}
+
                     <div class="container-login100-form-btn">
                         <button class="login100-form-btn" type="submit">Create Room</button>
                     </div>
