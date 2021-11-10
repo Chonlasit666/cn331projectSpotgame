@@ -80,7 +80,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         #print("receive" + action)
         max_user = await self.max_users()
         ready_user = await self.play()
+        print('TEST')
         print(ready_user)
+        print('TEST2')
         print(max_user)
         #print(ready_user)
         if max_user <= ready_user :

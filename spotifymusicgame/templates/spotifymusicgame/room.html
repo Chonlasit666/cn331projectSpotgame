@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+{% load static %}
 <head>
     <meta charset="utf-8"/>
     <title>Chat Room</title>
@@ -11,14 +12,15 @@
     <img id="img" alt="Trulli" width="300" height="300">
 
     <p>
-        <audio id="myAudio" controls  onended="nextAudio()">
+        <audio id="myAudio">
 
         </audio>
     </p>
-
+    <input type="text" id = "answer" onblur="changeVal();"/>
     <input id="Ready" type="button" value="Ready" style="display:block;">
 
     <h1>Welcome User : {{request.user.username}}</h1>
+    <p id = "score">0</p>
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
@@ -37,43 +39,73 @@
         console.log(uris);
 
         var audio = document.getElementById("myAudio");
-        var song_ = document.getElementById("song_");
-        var artist_ = document.getElementById("artist_");
-        var y  = uris
-        
+        var song = document.getElementById("song_");
+        var artist = document.getElementById("artist_");
+        var img = document.getElementById('img');
+        var scoreOutput = document.getElementById('score');
+        var NameValue
         var i = 0;
         audio.volume = 0.2;
-        if (y[i] == 'None'){nextAudio();}
-        else{audio.src = y[i];}
+        var score_int = 0;
+        score = 0;
+        var answerInput = document.getElementById('answer')
 
-        if (images[i] == 'None'){nextAudio();}
-        else{img.src = images[i];}
-        song_.innerHTML = songs[i];
-        artist_.innerHTML = artists[i];
+        
+        function useValue() {
+        NameValue = answerInput.value;
+        console.log(NameValue);
+        }
+        answerInput.onchange = useValue;  
+        answerInput.onblur = useValue;
 
-        function nextAudio() { 
-            i++;
-            audio.pause();
-            if (y[i] == 'None'){
-            nextAudio();
-            }
+        song.innerHTML = '???';
+        artist.innerHTML = '???';
+        img.src = "{%static 'images/Question.jpg'%}";
+        audio.src = uris[i];
+        audio.pause();
+
+        function Question(){
+            if (i > (uris.length - 1)){Check_end}
             else{
-            audio.src = y[i];
+            audio.pause();
+            song.innerHTML = '???';
+            artist.innerHTML = '???';
+            img.src = "{%static 'images/Question.jpg'%}";
+            audio.src = uris[i];
             audio.load(); 
             audio.play();
-            var img = document.getElementById('img').src = images[i];
-            song_.innerHTML = songs[i];
-            artist_.innerHTML = artists[i];
+            setTimeout(Answer, 30000);
             }
-        } 
+        }
 
+        function Answer(){
+            audio.pause();
+            Check_Answer();
+            song.innerHTML = songs[i];
+            artist.innerHTML = artists[i];
+            img.src = images[i];
+            audio.src = uris[i];
+            audio.load(); 
+            audio.play();
+            i += 1;
+            setTimeout(Question, 10000);
+        }
 
+        function Check_Answer(){
+            console.log('Answer!!')
+            console.log(NameValue)
+            if (NameValue === songs[i]){
+            score_int += 1;
+            scoreOutput.innerHTML = score_int;
+            console.log('Correct')
+            }
+        }   
+        function Check_end(){
+            i = 0;                             /*debug*/
+            Question;
+        }
 
-
-
-
-
-
+        
 
 
 
@@ -99,6 +131,7 @@
             const data = JSON.parse(e.data);
             if("play" === data.action){
                 audio.play();
+                Question();
             }
             else if("chat" === data.action){
                 document.querySelector('#chat-log').value += (data.username + ': ' + data.message  + '\n');
