@@ -6,6 +6,7 @@ from django.utils import timezone
 
 from .managers import CustomUserManager
 
+
 class CustomUser(AbstractUser):
     username = models.CharField(max_length=16)
     email = models.EmailField(_('email address'), unique=True)
@@ -19,7 +20,8 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
-
+# Future Work Models May be in future we will use FriendSystem in our project to make a good exprerince for you
+'''
 class FriendList(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE ,related_name='user')
@@ -98,3 +100,4 @@ class FriendRequest(models.Model):
     def cancel(self):
         self.is_active = False
         self.save()
+'''

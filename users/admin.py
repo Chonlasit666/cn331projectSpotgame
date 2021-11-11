@@ -3,11 +3,12 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser, FriendList, FriendRequest
+from .models import CustomUser
+#from .models import CustomUser, FriendList, FriendRequest
 
 
 class CustomUserAdmin(UserAdmin):
-    add_form =CustomUserCreationForm
+    add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
     list_display = ('email', 'is_staff', 'is_active',)
@@ -27,6 +28,7 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 
+'''
 class FriendListAdmin(admin.ModelAdmin):
     list_filter = ['user']
     list_display = ['user']
@@ -48,8 +50,6 @@ class FriendListAdmin(admin.ModelAdmin):
         model = FriendList
 
 
-admin.site.register(FriendList, FriendListAdmin)
-
 
 class FriendRequestAdmin(admin.ModelAdmin):
     list_filter = ['sender', 'receiver']
@@ -61,5 +61,6 @@ class FriendRequestAdmin(admin.ModelAdmin):
 
 
 admin.site.register(FriendRequest, FriendRequestAdmin)
-
+admin.site.register(FriendList, FriendListAdmin)
+'''
 admin.site.register(CustomUser, CustomUserAdmin)
