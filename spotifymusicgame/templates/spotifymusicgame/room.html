@@ -13,13 +13,20 @@
     <link rel="stylesheet" type="text/css" href="{%static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
     <link rel="stylesheet" type="text/css" href="{%static 'login/css/util.css' %}">
     <link rel="stylesheet" type="text/css" href="{%static 'login/css/main.css' %}">
+
+    <div class="topnav">
+        <a class="active" href="{% url 'smg:index' %}">Home</a>
+        <a href="{% url 'smg:aboutme' %} " target="_blank">About</a>
+        <a href="{% url 'smg:createroom' %} "> Create Room </a>
+        <a class="active" href="{% url 'users:logout' %}" , style="float: right;">Logout</a>
+    </div>
 </head>
 
 <body>
     <div class="split left">
         <div class="centered">
             <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
-                <p id = "trackcount"></p>
+                <h1 id="trackcount"></h1>
                 <span class="login100-form-title p-b-32"><b>
                         <h1 id="song_"></h1>
                     </b> </span>
@@ -54,10 +61,10 @@
         <div class="centered">
             <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
 
+                <h1> Room ID: {{room_name}} </h1>
                 <h1>Username : {{request.user.username}}</h1>
 
                 <h1 id="score">Score: 0</h1>
-                <p> room ID: {{room_name}} </p>
                 <br>
 
                 <textarea readonly style="resize:none; background-color: #b3b3b3; 
@@ -148,7 +155,7 @@
             console.log(NameValue)
             if (NameValue.toLowerCase() === songs[i].toLowerCase()) {
                 score_int += 1;
-                scoreOutput.innerHTML = "Score: "+ score_int;
+                scoreOutput.innerHTML = "Score: " + score_int;
                 console.log('Correct')
             }
         }
@@ -156,14 +163,14 @@
             console.log("ENDING")
             var message = user_username + " have " + score_int + " score!";
             chatSocket.send(JSON.stringify({
-                'message': message ,
+                'message': message,
                 'username': "System",
                 'action': "chat",
             }));
         }
 
-        function Trackcount(){
-            trackcountOUTPUT.innerHTML = (i+1) + "/" + uris.length;
+        function Trackcount() {
+            trackcountOUTPUT.innerHTML = (i + 1) + "/" + uris.length;
         }
 
         const user_username = JSON.parse(document.getElementById('user_username').textContent);
@@ -181,21 +188,21 @@
         chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
 
-            if("ready" === data.action ){
+            if ("ready" === data.action) {
                 document.querySelector('#chat-log').value += ('System : ' + data.username + ' ' + data.message + '\n');
-        
+
             }
             else if ("play" === data.action) {
                 document.querySelector('#chat-log').value += ('System : ' + data.username + ' ' + data.message + '\n');
-                document.querySelector('#chat-log').value += ('System : Game start ! ' +  '\n');
+                document.querySelector('#chat-log').value += ('System : Game start ! ' + '\n');
                 audio.play();
                 Question();
             }
-           
+
             else if ("chat" === data.action) {
                 document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
             }
-            
+
 
         };
 
@@ -228,7 +235,7 @@
                 'username': user_username,
                 'message': message,
                 'action': "ready",
-            }));            
+            }));
         };
 
 
