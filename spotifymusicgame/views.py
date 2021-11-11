@@ -41,7 +41,7 @@ def room(request, room_name):
                 images.append(str(i.image).replace("'",""))
                 uris.append(str(i.uri).replace("'",""))
         
-        seed = random.randint(1,100)
+        seed = room_name
         random.Random(seed).shuffle(songs)
         random.Random(seed).shuffle(artists)
         random.Random(seed).shuffle(images)
@@ -52,14 +52,8 @@ def room(request, room_name):
         image_json = json.dumps(images)
         uri_json = json.dumps(uris)
 
-
-        track = sp.track('spotify:track:6IG5ZOKnUryCcsvzopK23A')
         return render(request, 'spotifymusicgame/room.html', {
             'room_name': room_name,
-            "name": track['name'],
-            "artist": track['artists'][0]['name'],
-            "pic": track['album']['images'][0]['url'],
-            "url": track['preview_url'],
             'songs' : song_json,
             'artists' : artist_json,
             'images' : image_json,

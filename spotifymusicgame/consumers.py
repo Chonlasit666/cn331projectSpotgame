@@ -47,12 +47,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
         
         elif action == "ready":
+            message = text_data_json['message']
             await self.ready_users()
             # Send status to room group
             await self.channel_layer.group_send(
                 self.room_group_name,
             {
                     'type': 'ready',
+                    'message': message,
                     'username': username,
                     'action' : action,
                 }
@@ -74,16 +76,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
     #--------------------------------------------------
     # Receive message from room group
     async def ready(self, event):
+        message = "has ready!"
         username = event['username']
         action = event['action']
-        
-        #print("receive" + action)
+    
         max_user = await self.max_users()
         ready_user = await self.play()
-        print('TEST')
-        print(ready_user)
-        print('TEST2')
-        print(max_user)
+        #print('TEST')
+        #print(ready_user)
+        #print('TEST2')
+        #print(max_user)
         #print(ready_user)
         if max_user <= ready_user :
             print("test play")
@@ -91,6 +93,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
+            'message': message,
             'username': username,
             'action': action,
         }))
