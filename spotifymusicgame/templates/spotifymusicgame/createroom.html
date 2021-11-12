@@ -11,6 +11,7 @@
     <title>Create Room</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{%static 'styles/split.css' %}">
     <link rel="stylesheet" type="text/css" href="{%static 'styles/navbar.css' %}">
     <link rel="icon" type="image/png" href="{%static 'login/images/icons/spotify-logo.png' %}" />
     <link rel="stylesheet" type="text/css" href="{%static 'login/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
@@ -18,57 +19,55 @@
     <link rel="stylesheet" type="text/css" href="{%static 'login/css/util.css' %}">
     <link rel="stylesheet" type="text/css" href="{%static 'login/css/main.css' %}">
 
-</head>
-
-<body>
     <div class="topnav">
         <a class="active" href="{% url 'smg:index' %}">Home</a>
         <a href="{% url 'smg:aboutme' %} " target="_blank">About</a>
+        <a href="{% url 'smg:createroom' %} "> Create Room </a>
         <a class="active" href="{% url 'users:logout' %}" , style="float: right;">Logout</a>
     </div>
+</head>
 
-    <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
-                <span class="login100-form-title p-b-32"><b>
-                        Room Settings
-                    </b></span>
+<body style="background-color: #212121" ;>
+    <div class="centered">
+        <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
+            <span class="login100-form-title p-b-32"><b>
+                    Room Settings
+                </b></span>
 
-                <form class="login100-form validate-form flex-sb flex-w" action="{% url 'smg:createroom' %}"
-                    method="post">{% csrf_token %}
+            <form class="login100-form validate-form flex-sb flex-w" action="{% url 'smg:createroom' %}" method="post">
+                {% csrf_token %}
 
-                    <span class="txt1 p-b-11">
-                        Max Player
-                    </span>
+                <span class="txt1 p-b-11">
+                    Max Player
+                </span>
 
-                    <div class="wrap-input100 validate-input m-b-36" data-validate="Max Player is required">
-                        <input type="text" name="Max_player" class="input100"></input>
-                        <span class="focus-input100"></span>
-                    </div>
+                <div class="wrap-input100 validate-input m-b-36" data-validate="Max Player is required">
+                    <input type="text" name="Max_player" class="input100"></input>
+                    <span class="focus-input100"></span>
+                </div>
 
-                    <span class="txt1 p-b-11">
-                        Spotify URI
-                    </span>
+                <span class="txt1 p-b-11">
+                    Spotify URI
+                </span>
 
-                    <div class="wrap-input100 validate-input m-b-36" data-validate="Max Player is required">
-                        <input type="text" name="URI" class="input100"></input>
-                        <span class="focus-input100"></span>
-                    </div>
+                <div class="wrap-input100 validate-input m-b-36" data-validate="Max Player is required">
+                    <input type="text" name="URI" class="input100"></input>
+                    <span class="focus-input100"></span>
+                </div>
 
-                    {% if messages %}
-                    <ul class="messages" style="color: red">
-                        {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-                            {% endfor %}
-                    </ul>
-                    {% endif %}
+                {% if messages %}
+                <ul class="messages" style="color: red">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                        {% endfor %}
+                </ul>
+                {% endif %}
 
-                    <div class="container-login100-form-btn">
-                        <button class="login100-form-btn" type="submit">Create Room</button>
-                    </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" type="submit">Create Room</button>
+                </div>
 
-                    {{ID}}
-            </div>
+                {{ID}}
         </div>
     </div>
 </body>
