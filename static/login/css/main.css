@@ -413,6 +413,7 @@ iframe {
   display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .login100-form-btn {
@@ -520,6 +521,9 @@ iframe {
   }
 }
 
+/*//////////////////////////////////////////////////////////////////
+[ Frankenstien ]*/
+
 .wrap-enter-room {
   width: 600px;
   background: #535353;
@@ -532,4 +536,16 @@ iframe {
     padding-left: 15px;
     padding-right: 15px;
   }
+}
+
+.room-container-login100-form-btn {
+  margin-top: -25px;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }

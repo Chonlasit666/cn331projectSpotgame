@@ -1,49 +1,88 @@
+<!DOCTYPE html>
 {% load static %}
-<link rel="stylesheet" href= "{%static 'styles/about.css'%}">
-<DOCTYPE! html>
 <html>
-    <head>
-            <h1>About us</h1>
-    </head>
-    <body>
-            <div class="SMQ">
-                <h2>What is <span class="SMQhead">Spotify Music Quiz</span>?</h2>
-                <p>spotify music quiz is the game that's let everyone who love music and want to challenge, in this game will let you
-                asking yourself that you can remember the song's name by collecting the score to measure your memory.</p>
-            </div>
 
-            <div class="spotgame">
-                <h2>What is <span class="sptgamecss">Spotgame</span>?</h2>
-                <p>Spotgame is the team that form by four college students. We(spotgame) are college students that keen to try something new,
-                something that challenge our knowledge to the limit, with high potential we are going to make this game happen no matter how hard it is</p>
-            </div>
+<head>
+    <link rel="stylesheet" type="text/css" href="{%static 'styles/navbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{%static 'styles/about.css' %}">
+    <link rel="stylesheet" type="text/css" href="{%static 'login/css/main.css' %}">
+    <link rel="icon" type="image/png" href="{%static 'login/images/icons/spotify-logo.png' %}" />
+    <!-- THIS IS NAVIGATION BAR !-->
+    <div class="topnav">
+        <a class="active" href="{% url 'smg:index' %}">Home</a>
+        <a href="https://github.com/Chonlasit666/cn331projectSpotgame" target="_blank">Github</a>
+        <a href="https://www.pivotaltracker.com/n/projects/2536429" target="_blank">Feature</a>
+        <a href="{% url 'users:logout' %}" , style="float: right;">Logout</a>
+    </div>
+</head>
 
-            <h2>So let us introduce ourselves</h2>
-            <div class="chonlasit">
-                <img src="{%static 'images/moss.png'%}" alt="cyan">
+<body style="background-color: #212121" ;>
+
+    <!-- END OF NAVIGATION BAR !-->
+    <h1> About us </h1>
+    <br>
+    <div class="SMQ">
+        <h2>What is <span class="SMQhead">Spotify Music Quiz</span>?</h2>
+        <p> spotify music quiz is the game that's let everyone who love music and want to challenge, in this game
+            will let you
+            asking yourself that you can remember the song's name by collecting the score to measure your memory.
+        </p>
+    </div>
+    <br>
+    <div class="spotgame">
+        <h2>What is <span class="sptgamecss">Spotgame</span>?</h2>
+        <p>Spotgame is the team that form by four college students. We (spotgame) are college students that keen to
+            try something new,
+            something that challenge our knowledge to the limit, with high potential we are going to make this game
+            happen no matter how hard it is</p>
+    </div>
+    <br> <br>
+    <h1>So let us introduce ourselves</h1>
+    <div class="column">
+        <div class="card">
+            <p class="aligncenter">
+                <img src="{%static 'images/moss.png'%}" alt="orange" class="center">
+            </p>
+            <div class="container">
                 <h3>Chonlasit Mooncorn 6110613020</h3>
-                <p>"no more real world,I'll reject body and release the soul to EORZEA"</p>
-                <p>"リンクスタート !!"</p>
+                <p style="color:white">"no more real world,I'll reject body and release the soul to EORZEA"</p>
+                <p style="color:white">"リンクスタート !!"</p>
             </div>
-            <div class="weeraphat">
-                <img src="{%static 'images/jj.jpg'%}" alt="cyan">
+        </div>
+    </div>
+    <div class="column">
+        <div class="card">
+            <p class="aligncenter">
+                <img src="{%static 'images/jj.jpg'%}" alt="orange" class="center">
+            </p>
+            <div class="container">
                 <h3>Weeraphat Leelawittayanon 6210612823 </h3>
-                <p>"Have you tried the expanded Free Trial of our critically acclaimed MMORPG #FFXIV? You can play through the entirety of A Realm Reborn and the award-winning Heavensward expansion up to level 60 for FREE with no restrictions on playtime!"</p>
+                <p style="color:white"> "So Tired, I only want to play video games !" </p>
             </div>
-            <div class="patompong">
-                <img src="{%static 'images/TVNG.jpg'%}" alt="orange">
+        </div>
+    </div>
+    <div class="column">
+        <div class="card">
+            <p class="aligncenter">
+                <img src="{%static 'images/TVNG.jpg'%}" alt="orange" class="center">
+            </p>
+            <div class="container">
                 <h3>Patompong Vanasantipong 6210612856 </h3>
-                <p>"I lost my life because of FFXIV, now let me farm for a sec." </p>
+                <p style="color:white"> "I lost my life because of FFXIV, now let me farm for a sec." </p>
             </div>
-            <div class="raned">
-                <img src="{%static 'images/bab.jpg'%}" alt="cyan">
-                <h3>Raned Chuphueak 6210612864</h3>
-                <p>"I'm too old to play game. NO MORE GAME I'LL BE WORKING MAN"</p>
+        </div>
+    </div>
+    <div class="column">
+        <div class="card">
+            <p class="aligncenter">
+                <img src="{%static 'images/bab.jpg'%}" alt="orange" class="center">
+            </p>
+            <div class="container">
+                <h3>Raned Chuphueak 6210612864 </h3>
+                <p style="color:white"> I'm too old to play game. NO MORE GAME I'LL BE WORKING MAN" </p>
             </div>
+        </div>
+    </div>
+</body>
 
-                <h2 style="color:white;margin-top: 120px;border-left:solid;border-left-color: white;border-left-width:thick;padding-left: 20px;"> linked </h2>
-                <p ><a style="color:greenyellow;margin-left:50px;" href="https://github.com/Chonlasit666/cn331projectSpotgame" >github</a></p>
-                <p><a style="color:greenyellow;margin-left:50px;"href="https://www.pivotaltracker.com/n/projects/2536429">future feature</a></p>
-            <p1><a href="{% url 'users:index' %}">Return</a></1p>
-        </body>
 </html>

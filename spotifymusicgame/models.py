@@ -11,7 +11,7 @@ class songModel(models.Model):
     artist = models.CharField(max_length=100)
     image = models.CharField(max_length=255)
     song = models.CharField(max_length=255)
-    uri = models.CharField(max_length=255)
+    uri = models.CharField(max_length=255,null=True, blank=True)
 
     def __str__(self):
         return self.song + " by " + self.artist
@@ -44,15 +44,15 @@ class playList(models.Model):
             self.song_list.add(song)
         self.save()
 
-
     def __str__(self):
         return self.url
 
 
 class roomInfo(models.Model):
     player = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,null= True,blank=True)
+        settings.AUTH_USER_MODEL, null=True, blank=True)
     url = models.ForeignKey(playList, on_delete=models.CASCADE)
+    ready_player = models.IntegerField(default=0)
     max_player = models.IntegerField(default=8)
     max_song = models.IntegerField(default=10)
     guess_time = models.IntegerField(default=15)

@@ -29,17 +29,17 @@
                     <input class="input100" type="text" id="room-name-input">
                     <span class="focus-input100"></span>
                 </div>
-
-                <div class="container-login100-form-btn">
+    
+                <div class="room-container-login100-form-btn">
                     <button input class="login100-form-btn" type="submit" id="room-name-submit">
                         Enter
                     </button>
                 </div>
-
-                <p style="text-align:right;"><a href="{% url 'smg:aboutme' %}">About us</a></p>
-
-                <p style="text-align:right;"><a href="{% url 'users:logout' %}">Logout</a></p>
-
+                <br>
+                <div style="text-align:center">
+                    <span style="float:left;"><a href="{% url 'smg:aboutme' %}">About us</a></span>
+                    <span style="float:right;"><a href="{% url 'users:logout' %}">Logout</a></span>
+                </div>
                 <script>
                     document.querySelector('#room-name-input').focus();
                     document.querySelector('#room-name-input').onkeyup = function (e) {
