@@ -55,7 +55,7 @@ class roomInfo(models.Model):
     ready_player = models.IntegerField(default=0)
     max_player = models.IntegerField(default=8)
     max_song = models.IntegerField(default=10)
-    guess_time = models.IntegerField(default=15)
+    player_inroom = models.IntegerField(default=0)
 
 
 class played(models.Model):

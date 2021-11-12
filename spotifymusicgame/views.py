@@ -14,7 +14,6 @@ from spotipy.oauth2 import SpotifyClientCredentials
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="ffc4c1c607de49489dc5b071b326727e",
                                                            client_secret="4fd9dfe58f914768b24a034e1da88c2b"))
 
-
 def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("users:login"))
@@ -22,7 +21,11 @@ def index(request):
         return render(request, "spotifymusicgame/index.html")
 
 def room(request, room_name):
-    
+    try: 
+        check = roomInfo.objects.get(id = room_name)
+    except:
+        return render(request, "spotifymusicgame/index.html")
+
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("users:login"))
     else:
@@ -32,7 +35,6 @@ def room(request, room_name):
         uris = []
         dbsong = []
 
-        count = 0
         for i in songModel.objects.filter(playlist__url=roomInfo.objects.get(id = room_name).url):
             if not i.uri:
                 pass

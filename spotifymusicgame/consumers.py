@@ -5,6 +5,7 @@ from .models import *
 from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 
+
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
@@ -15,8 +16,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-
         await self.accept()
+        await self.player_joinroom()
+        print("connecting.....")
 
     async def disconnect(self, close_code):
         # Leave room group
@@ -24,6 +26,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+        await self.player_leaveroom()
+        print("disconnected....")
 
     # Receive message from WebSocket
     async def receive(self, text_data):
@@ -120,3 +124,24 @@ class ChatConsumer(AsyncWebsocketConsumer):
         current_user = roomInfo.objects.get(id=room_id).ready_player
  
         return current_user
+
+    @database_sync_to_async
+    def player_joinroom(self):
+        room_id =  self.room_name = self.scope['url_route']['kwargs']['room_name']
+        current = roomInfo.objects.get(id=room_id)
+        current.player_inroom = current.player_inroom + 1
+        current.save()
+        print(f"player in room {current.player_inroom}")
+
+    @database_sync_to_async
+    def player_leaveroom(self):
+        room_id =  self.room_name = self.scope['url_route']['kwargs']['room_name']
+        current = roomInfo.objects.get(id=room_id)
+        current.player_inroom = current.player_inroom - 1
+        current.save()
+        print(f"player in room {current.player_inroom}")
+
+        if current.player_inroom == 0 :
+            current.delete()
+        
+        
