@@ -7,7 +7,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{%static 'styles/split.css' %}">
-    <link rel="stylesheet" type="text/css" href="{%static 'styles/autocomplete.css' %}">
     <link rel="stylesheet" type="text/css" href="{%static 'styles/navbar.css' %}">
     <link rel="icon" type="image/png" href="{%static 'login/images/icons/spotify-logo.png' %}" />
     <link rel="stylesheet" type="text/css" href="{%static 'login/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
@@ -46,13 +45,10 @@
 
                 <br>
 
-                <form autocomplete="off" action="/action_page.php">
-                    <div class="autocomplete wrap-input100 validate-input m-b-36">
-                        <input id="answer" type="text" class="input100" name="myCountry" onblur="changeVal();">
-                        </input>
-                        <span class="focus-input100"></span>
-                    </div>
-                </form>
+                <div class="wrap-input100 validate-input m-b-36">
+                    <input type="text" class="input100" id="answer" onblur="changeVal();" /> </input>
+                    <span class="focus-input100"></span>
+                </div>
 
                 <div class="container-login100-form-btn">
                     <input class="login100-form-btn" id="Ready" type="button" value="Ready" style="display:block;">
@@ -81,274 +77,277 @@
                     <span class="focus-input100"></span>
                 </div>
 
-                <a href="{% url 'smg:index' %}" style="float: right; margin-top:-25px">
+                <a href="{% url 'smg:index' %}"  style="float: right; margin-top:-25px">
                     <button class=login100-form-btn style="background-color: red;"">Return</button>
                     </a>
             </div>
         </div>
     </div>
 
-    <input id=" chat-message-submit" type="button" hidden value="Send">
-                        {{ room_name|json_script:"room-name" }}
-                        {{ request.user.username|json_script:"user_username" }}
+    <input id="chat-message-submit" type="button" hidden value="Send">
+    {{ room_name|json_script:"room-name" }}
+    {{ request.user.username|json_script:"user_username" }}
 
-                        <script>
-                            const songs = JSON.parse('{{songs|safe}}');
-                            console.log(songs);
-                            const artists = JSON.parse('{{artists|safe}}');
-                            console.log(artists);
-                            const images = JSON.parse('{{images|safe}}');
-                            console.log(images);
-                            const uris = JSON.parse('{{uris|safe}}');
-                            console.log(uris);
+    <script>
+        function autocomplete(inp, arr) {
+  /*the autocomplete function takes two arguments,
+  the text field element and an array of possible autocompleted values:*/
+  var currentFocus;
+  /*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", function(e) {
+      var a, b, i, val = this.value;
+      /*close any already open lists of autocompleted values*/
+      closeAllLists();
+      if (!val) { return false;}
+      currentFocus = -1;
+      /*create a DIV element that will contain the items (values):*/
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      /*append the DIV element as a child of the autocomplete container:*/
+      this.parentNode.appendChild(a);
+      /*for each item in the array...*/
+      for (i = 0; i < arr.length; i++) {
+        /*check if the item starts with the same letters as the text field value:*/
+        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          /*make the matching letters bold:*/
+          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          /*execute a function when someone clicks on the item value (DIV element):*/
+          b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+          });
+          a.appendChild(b);
+        }
+      }
+  });
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+      var x = document.getElementById(this.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+        currentFocus++;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+        currentFocus--;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+        e.preventDefault();
+        if (currentFocus > -1) {
+          /*and simulate a click on the "active" item:*/
+          if (x) x[currentFocus].click();
+        }
+      }
+  });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+  }
+  /*execute a function when someone clicks in the document:*/
+  document.addEventListener("click", function (e) {
+      closeAllLists(e.target);
+  });
+}
 
-                            var audio = document.getElementById("myAudio");
-                            var song = document.getElementById("song_");
-                            var artist = document.getElementById("artist_");
-                            var img = document.getElementById('img');
-                            var scoreOutput = document.getElementById('score');
-                            var NameValue = "";
-                            var i = 0;
-                            audio.volume = 0.2;
-                            var score_int = 0;
-                            score = 0;
-                            var answerInput = document.getElementById('answer');
-                            var trackcountOUTPUT = document.getElementById('trackcount');
+        /*An array containing all the country names in the world:*/
+        var countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua & Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia & Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central Arfrican Republic","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cuba","Curacao","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nauro","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","North Korea","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre & Miquelon","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","St Kitts & Nevis","St Lucia","St Vincent","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Turks & Caicos","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States of America","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
+
+        /*use autocomplete on answer input*/
+        autocomplete(document.getElementById("answer"), countries);
+
+        const songs = JSON.parse('{{songs|safe}}');
+        console.log(songs);
+        const artists = JSON.parse('{{artists|safe}}');
+        console.log(artists);
+        const images = JSON.parse('{{images|safe}}');
+        console.log(images);
+        const uris = JSON.parse('{{uris|safe}}');
+        console.log(uris);
+
+        var audio = document.getElementById("myAudio");
+        var song = document.getElementById("song_");
+        var artist = document.getElementById("artist_");
+        var img = document.getElementById('img');
+        var scoreOutput = document.getElementById('score');
+        var NameValue = "";
+        var i = 0;
+        audio.volume = 0.2;
+        var score_int = 0;
+        score = 0;
+        var answerInput = document.getElementById('answer');
+        var trackcountOUTPUT = document.getElementById('trackcount');
 
 
-                            function useValue() {
-                                NameValue = answerInput.value;
-                                console.log(NameValue);
-                            }
-                            answerInput.onchange = useValue;
-                            answerInput.onblur = useValue;
-
-                            song.innerHTML = '???';
-                            artist.innerHTML = '???';
-                            img.src = "{%static 'images/Question.jpg'%}";
-                            audio.src = uris[i];
-                            audio.pause();
-
-                            function Question() {
-                                if (i > (uris.length - 1)) { Ending(); }
-                                else {
-                                    Trackcount();
-                                    audio.pause();
-                                    song.innerHTML = '???';
-                                    artist.innerHTML = '???';
-                                    img.src = "{%static 'images/Question.jpg'%}";
-                                    audio.src = uris[i];
-                                    audio.load();
-                                    audio.play();
-                                    setTimeout(Answer, 30000);
-                                }
-                            }
-
-                            function Answer() {
-                                audio.pause();
-                                Check_Answer();
-                                song.innerHTML = songs[i];
-                                artist.innerHTML = artists[i];
-                                img.src = images[i];
-                                audio.src = uris[i];
-                                audio.load();
-                                audio.play();
-                                i += 1;
-                                setTimeout(Question, 10000);
-                            }
-
-                            function Check_Answer() {
-                                console.log('Answer!!')
-                                console.log(NameValue)
-                                if (NameValue.toLowerCase() === songs[i].toLowerCase()) {
-                                    score_int += 1;
-                                    scoreOutput.innerHTML = "Score: " + score_int;
-                                    console.log('Correct')
-                                }
-                            }
-                            function Ending() {
-                                console.log("ENDING")
-                                var message = user_username + " have " + score_int + " score!";
-                                chatSocket.send(JSON.stringify({
-                                    'message': message,
-                                    'username': "System",
-                                    'action': "chat",
-                                }));
-                            }
-
-                            function Trackcount() {
-                                trackcountOUTPUT.innerHTML = (i + 1) + "/" + uris.length;
-                            }
-
-                            const user_username = JSON.parse(document.getElementById('user_username').textContent);
-                            const roomName = JSON.parse(document.getElementById('room-name').textContent);
-                            const chatSocket = new WebSocket(
-                                'ws://'
-                                + window.location.host
-                                + '/ws/smg/'
-                                + roomName
-                                + '/'
-                            );
+        function useValue() {
+            NameValue = answerInput.value;
+            console.log(NameValue);
+        }
+        answerInput.onchange = useValue;
+        answerInput.onblur = useValue;
 
 
-                            /*receive message from backend*/
-                            chatSocket.onmessage = function (e) {
-                                const data = JSON.parse(e.data);
+        song.innerHTML = '???';
+        artist.innerHTML = '???';
+        img.src = "{%static 'images/Question.jpg'%}";
+        audio.src = uris[i];
+        audio.pause();
 
-                                if ("ready" === data.action) {
-                                    document.querySelector('#chat-log').value += ('System : ' + data.username + ' ' + data.message + '\n');
+        function Question() {
+            if (i > (uris.length - 1)) { Ending(); }
+            else {
+                Trackcount();
+                audio.pause();
+                song.innerHTML = '???';
+                artist.innerHTML = '???';
+                img.src = "{%static 'images/Question.jpg'%}";
+                audio.src = uris[i];
+                audio.load();
+                audio.play();
+                setTimeout(Answer, 30000);
+            }
+        }
 
-                                }
-                                else if ("play" === data.action) {
-                                    document.querySelector('#chat-log').value += ('System : ' + data.username + ' ' + data.message + '\n');
-                                    document.querySelector('#chat-log').value += ('System : Game start ! ' + '\n');
-                                    audio.play();
-                                    Question();
-                                }
+        function Answer() {
+            audio.pause();
+            Check_Answer();
+            song.innerHTML = songs[i];
+            artist.innerHTML = artists[i];
+            img.src = images[i];
+            audio.src = uris[i];
+            audio.load();
+            audio.play();
+            i += 1;
+            setTimeout(Question, 10000);
+        }
 
-                                else if ("chat" === data.action) {
-                                    document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
-                                }
+        function Check_Answer() {
+            NameValue = answerInput.value;
+            console.log('Answer!!')
+            console.log(NameValue)
+            if (NameValue.toLowerCase() === "Taiwan".toLowerCase()) {
+                score_int += 1;
+                scoreOutput.innerHTML = "Score: " + score_int;
+                console.log('Correct')
+            }
+        }
+        function Ending() {
+            console.log("ENDING")
+            var message = user_username + " have " + score_int + " score!";
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'username': "System",
+                'action': "chat",
+            }));
+        }
+
+        function Trackcount() {
+            trackcountOUTPUT.innerHTML = (i + 1) + "/" + uris.length;
+        }
+
+        const user_username = JSON.parse(document.getElementById('user_username').textContent);
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/smg/'
+            + roomName
+            + '/'
+        );
 
 
-                            };
+        /*receive message from backend*/
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
 
-                            chatSocket.onclose = function (e) {
-                                console.error('Chat socket closed unexpectedly');
-                            };
+            if ("ready" === data.action) {
+                document.querySelector('#chat-log').value += ('System : ' + data.username + ' ' + data.message + '\n');
 
-                            document.querySelector('#chat-message-input').focus();
-                            document.querySelector('#chat-message-input').onkeyup = function (e) {
-                                if (e.keyCode === 13) {  // enter, return
-                                    document.querySelector('#chat-message-submit').click();
-                                }
-                            };
+            }
+            else if ("play" === data.action) {
+                document.querySelector('#chat-log').value += ('System : ' + data.username + ' ' + data.message + '\n');
+                document.querySelector('#chat-log').value += ('System : Game start ! ' + '\n');
+                audio.play();
+                Question();
+            }
 
-                            document.querySelector('#chat-message-submit').onclick = function (e) {
-                                const messageInputDom = document.querySelector('#chat-message-input');
-                                const message = messageInputDom.value;
-                                chatSocket.send(JSON.stringify({
-                                    'message': message,
-                                    'username': user_username,
-                                    'action': "chat",
-                                }));
-                                messageInputDom.value = '';
-                            };
+            else if ("chat" === data.action) {
+                document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
+            }
 
-                            document.querySelector('#Ready').onclick = function (e) {
-                                document.getElementById("Ready").style.display = "none";
-                                const message = "";
-                                chatSocket.send(JSON.stringify({
-                                    'username': user_username,
-                                    'message': message,
-                                    'action': "ready",
-                                }));
-                            };
-                            function autocomplete(inp, arr) {
-                                /*the autocomplete function takes two arguments,
-                                the text field element and an array of possible autocompleted values:*/
-                                var currentFocus;
-                                /*execute a function when someone writes in the text field:*/
-                                inp.addEventListener("input", function (e) {
-                                    var a, b, i, val = this.value;
-                                    /*close any already open lists of autocompleted values*/
-                                    closeAllLists();
-                                    if (!val) { return false; }
-                                    currentFocus = -1;
-                                    /*create a DIV element that will contain the items (values):*/
-                                    a = document.createElement("DIV");
-                                    a.setAttribute("id", this.id + "autocomplete-list");
-                                    a.setAttribute("class", "autocomplete-items");
-                                    /*append the DIV element as a child of the autocomplete container:*/
-                                    this.parentNode.appendChild(a);
-                                    /*for each item in the array...*/
-                                    for (i = 0; i < arr.length; i++) {
-                                        /*check if the item starts with the same letters as the text field value:*/
-                                        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                                            /*create a DIV element for each matching element:*/
-                                            b = document.createElement("DIV");
-                                            /*make the matching letters bold:*/
-                                            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-                                            b.innerHTML += arr[i].substr(val.length);
-                                            /*insert a input field that will hold the current array item's value:*/
-                                            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-                                            /*execute a function when someone clicks on the item value (DIV element):*/
-                                            b.addEventListener("click", function (e) {
-                                                /*insert the value for the autocomplete text field:*/
-                                                inp.value = this.getElementsByTagName("input")[0].value;
-                                                /*close the list of autocompleted values,
-                                                (or any other open lists of autocompleted values:*/
-                                                closeAllLists();
-                                            });
-                                            a.appendChild(b);
-                                        }
-                                    }
-                                });
-                                /*execute a function presses a key on the keyboard:*/
-                                inp.addEventListener("keydown", function (e) {
-                                    var x = document.getElementById(this.id + "autocomplete-list");
-                                    if (x) x = x.getElementsByTagName("div");
-                                    if (e.keyCode == 40) {
-                                        /*If the arrow DOWN key is pressed,
-                                        increase the currentFocus variable:*/
-                                        currentFocus++;
-                                        /*and and make the current item more visible:*/
-                                        addActive(x);
-                                    } else if (e.keyCode == 38) { //up
-                                        /*If the arrow UP key is pressed,
-                                        decrease the currentFocus variable:*/
-                                        currentFocus--;
-                                        /*and and make the current item more visible:*/
-                                        addActive(x);
-                                    } else if (e.keyCode == 13) {
-                                        /*If the ENTER key is pressed, prevent the form from being submitted,*/
-                                        e.preventDefault();
-                                        if (currentFocus > -1) {
-                                            /*and simulate a click on the "active" item:*/
-                                            if (x) x[currentFocus].click();
-                                        }
-                                    }
-                                });
-                                function addActive(x) {
-                                    /*a function to classify an item as "active":*/
-                                    if (!x) return false;
-                                    /*start by removing the "active" class on all items:*/
-                                    removeActive(x);
-                                    if (currentFocus >= x.length) currentFocus = 0;
-                                    if (currentFocus < 0) currentFocus = (x.length - 1);
-                                    /*add class "autocomplete-active":*/
-                                    x[currentFocus].classList.add("autocomplete-active");
-                                }
-                                function removeActive(x) {
-                                    /*a function to remove the "active" class from all autocomplete items:*/
-                                    for (var i = 0; i < x.length; i++) {
-                                        x[i].classList.remove("autocomplete-active");
-                                    }
-                                }
-                                function closeAllLists(elmnt) {
-                                    /*close all autocomplete lists in the document,
-                                    except the one passed as an argument:*/
-                                    var x = document.getElementsByClassName("autocomplete-items");
-                                    for (var i = 0; i < x.length; i++) {
-                                        if (elmnt != x[i] && elmnt != inp) {
-                                            x[i].parentNode.removeChild(x[i]);
-                                        }
-                                    }
-                                }
-                                /*execute a function when someone clicks in the document:*/
-                                document.addEventListener("click", function (e) {
-                                    closeAllLists(e.target);
-                                });
-                            }
 
-                            /*An array containing all the country names in the world:*/
-                            var countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua & Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia & Herzegovina", "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central Arfrican Republic", "Chad", "Chile", "China", "Colombia", "Congo", "Cook Islands", "Costa Rica", "Cote D Ivoire", "Croatia", "Cuba", "Curacao", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji", "Finland", "France", "French Polynesia", "French West Indies", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauro", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russia", "Rwanda", "Saint Pierre & Miquelon", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "St Kitts & Nevis", "St Lucia", "St Vincent", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor L'Este", "Togo", "Tonga", "Trinidad & Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks & Caicos", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Virgin Islands (US)", "Yemen", "Zambia", "Zimbabwe"];
+        };
 
-                            /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
-                            autocomplete(document.getElementById("myInput"), countries);
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
 
-                        </script>
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function (e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
 
+        document.querySelector('#chat-message-submit').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'username': user_username,
+                'action': "chat",
+            }));
+            messageInputDom.value = '';
+        };
+
+        document.querySelector('#Ready').onclick = function (e) {
+            document.getElementById("Ready").style.display = "none";
+            const message = "";
+            chatSocket.send(JSON.stringify({
+                'username': user_username,
+                'message': message,
+                'action': "ready",
+            }));
+        };
+
+
+    </script>
 </body>
 
 </html>
