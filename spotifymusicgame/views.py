@@ -30,6 +30,7 @@ def room(request, room_name):
         artists = []
         images = []
         uris = []
+        dbsong = []
 
         count = 0
         for i in songModel.objects.filter(playlist__url=roomInfo.objects.get(id = room_name).url):
@@ -40,6 +41,9 @@ def room(request, room_name):
                 artists.append(str(i.artist).replace("'",""))
                 images.append(str(i.image).replace("'",""))
                 uris.append(str(i.uri).replace("'",""))
+
+        for j in songModel.objects.all():
+            dbsong.append(str(j.song).replace("'",""))
         
         seed = room_name
         random.Random(seed).shuffle(songs)
@@ -51,6 +55,7 @@ def room(request, room_name):
         artist_json = json.dumps(artists)
         image_json = json.dumps(images)
         uri_json = json.dumps(uris)
+        dbsong_json = json.dumps(dbsong)
 
         return render(request, 'spotifymusicgame/room.html', {
             'room_name': room_name,
@@ -58,6 +63,7 @@ def room(request, room_name):
             'artists' : artist_json,
             'images' : image_json,
             'uris' : uri_json,
+            'dbsong' : dbsong_json,
         })
 
 
