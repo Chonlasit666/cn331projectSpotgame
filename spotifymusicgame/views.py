@@ -27,7 +27,6 @@ def room(request, room_name):
         roomInfo.objects.get(id=room_name)
     except:
         return render(request, "spotifymusicgame/index.html")
-
     current_user = roomInfo.objects.get(id=room_name).player_inroom
     max_user = roomInfo.objects.get(id=room_name).max_player
     is_playing = roomInfo.objects.get(id=room_name).is_playing
