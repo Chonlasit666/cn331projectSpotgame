@@ -24,12 +24,16 @@ def room(request, room_name):
     except:
         return render(request, "spotifymusicgame/index.html")
 
-    #check if room full 
+   
     current_user = roomInfo.objects.get(id=room_name).player_inroom
     max_user = roomInfo.objects.get(id=room_name).max_player
-
+    is_playing = roomInfo.objects.get(id=room_name).is_playing
+    #check if room full 
     if(current_user >= max_user) :
         return render(request, "spotifymusicgame/index.html")
+    #check if room playing    
+    if(is_playing):
+         return render(request, "spotifymusicgame/index.html")
 
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("users:login"))

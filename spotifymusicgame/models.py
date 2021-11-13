@@ -56,6 +56,7 @@ class roomInfo(models.Model):
     max_player = models.IntegerField(default=8)
     max_song = models.IntegerField(default=10)
     player_inroom = models.IntegerField(default=0)
+    is_playing = models.BooleanField(default=False)
 
 
 class played(models.Model):

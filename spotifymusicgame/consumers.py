@@ -107,9 +107,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         flag = False
         current_ready_user = roomInfo.objects.get(id=room_id).ready_player
         max_user = roomInfo.objects.get(id=room_id).max_player
+        playing = roomInfo.objects.get(id=room_id)
         if current_ready_user >= max_user :
             flag = True
- 
+            playing.is_playing = True
+            playing.save()
+
+
         return flag
 
     @database_sync_to_async
@@ -118,7 +122,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         current = roomInfo.objects.get(id=room_id)
         current.player_inroom = current.player_inroom + 1
         current.save()
-        print(f"player in room {room_id} {current.player_inroom}")
+        print(f"player in room {room_id} {current.player_inroom} player")
         
 
     @database_sync_to_async
@@ -128,7 +132,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         current.player_inroom = current.player_inroom - 1
         current.save()
         print("Player Disconnect")
-        print(f"player in room {room_id} {current.player_inroom}")
+        print(f"player in room {room_id} {current.player_inroom} player")
 
         if current.player_inroom == 0 :
             current.delete()
