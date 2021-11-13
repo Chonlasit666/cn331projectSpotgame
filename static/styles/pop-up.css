@@ -3,7 +3,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 
 /* Button used to open the chat form - fixed at the bottom of the page */
 .open-button {
-  background-color: #555;
+  background-color: #535353;
   color: white;
   padding: 16px 20px;
   border: none;
@@ -21,14 +21,14 @@ body {font-family: Arial, Helvetica, sans-serif;}
   position: fixed;
   bottom: 0;
   right: 15px;
-  border: 3px solid #f1f1f1;
+  border: 3px solid #212121;
   z-index: 9;
 }
 
 /* Add styles to the form container */
 .form-container {
-  max-width: 300px;
-  padding: 10px;
+  max-width: 1000px;
+  padding: 50px;
   background-color: white;
 }
 
