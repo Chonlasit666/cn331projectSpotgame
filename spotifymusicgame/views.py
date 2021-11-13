@@ -24,12 +24,9 @@ def room(request, room_name):
     try:
         roomInfo.objects.get(id=room_name)
     except:
+        messages.info(request, 'That room is not available')
         return render(request, "spotifymusicgame/index.html")
 
-    if not room_name.isdecimal():
-        messages.info(request, 'Please enter valid room name')
-        return render(request, "spotifymusicgame/index.html")
-        
     current_user = roomInfo.objects.get(id=room_name).player_inroom
     max_user = roomInfo.objects.get(id=room_name).max_player
     is_playing = roomInfo.objects.get(id=room_name).is_playing
