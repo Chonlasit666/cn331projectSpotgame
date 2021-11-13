@@ -47,6 +47,14 @@
                 </button>
             </div>
 
+            {% if messages %}
+            <ul class="messages" style="color: red; text-align:left;">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                    {% endfor %}
+            </ul>
+            {% endif %}
+
             <script>
                 document.querySelector('#room-name-input').focus();
                 document.querySelector('#room-name-input').onkeyup = function (e) {
@@ -57,6 +65,14 @@
 
                 document.querySelector('#room-name-submit').onclick = function (e) {
                     var roomName = document.querySelector('#room-name-input').value;
+                    if (roomName == "") {
+                        alert("Please enter your room code");
+                        return false;
+                    }
+                    if (isNaN(roomName)) {
+                        alert("Room code must be number");
+                        return false;
+                    }
                     window.location.pathname = '(%3FP' + roomName + '%5cd+)/$';
                 };
             </script>
