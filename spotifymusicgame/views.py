@@ -1,10 +1,8 @@
-from django.http.response import HttpResponseRedirect, JsonResponse
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.core import serializers
 from django.contrib import messages
 import json
-from django.core.serializers.json import DjangoJSONEncoder
 from .models import *
 import random
 
@@ -14,7 +12,6 @@ from spotipy.oauth2 import SpotifyClientCredentials
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="ffc4c1c607de49489dc5b071b326727e",
                                                            client_secret="4fd9dfe58f914768b24a034e1da88c2b"))
 
-
 def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("users:login"))
@@ -22,7 +19,22 @@ def index(request):
         return render(request, "spotifymusicgame/index.html")
 
 def room(request, room_name):
-    
+    try: 
+        roomInfo.objects.get(id = room_name)
+    except:
+        return render(request, "spotifymusicgame/index.html")
+
+   
+    current_user = roomInfo.objects.get(id=room_name).player_inroom
+    max_user = roomInfo.objects.get(id=room_name).max_player
+    is_playing = roomInfo.objects.get(id=room_name).is_playing
+    #check if room full 
+    if(current_user >= max_user) :
+        return render(request, "spotifymusicgame/index.html")
+    #check if room playing    
+    if(is_playing):
+         return render(request, "spotifymusicgame/index.html")
+
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("users:login"))
     else:
@@ -30,8 +42,8 @@ def room(request, room_name):
         artists = []
         images = []
         uris = []
+        dbsong = []
 
-        count = 0
         for i in songModel.objects.filter(playlist__url=roomInfo.objects.get(id = room_name).url):
             if not i.uri:
                 pass
@@ -40,6 +52,9 @@ def room(request, room_name):
                 artists.append(str(i.artist).replace("'",""))
                 images.append(str(i.image).replace("'",""))
                 uris.append(str(i.uri).replace("'",""))
+
+        for j in songModel.objects.all():
+            dbsong.append(str(j.song).replace("'",""))
         
         seed = room_name
         random.Random(seed).shuffle(songs)
@@ -51,6 +66,7 @@ def room(request, room_name):
         artist_json = json.dumps(artists)
         image_json = json.dumps(images)
         uri_json = json.dumps(uris)
+        dbsong_json = json.dumps(dbsong)
 
         return render(request, 'spotifymusicgame/room.html', {
             'room_name': room_name,
@@ -58,6 +74,7 @@ def room(request, room_name):
             'artists' : artist_json,
             'images' : image_json,
             'uris' : uri_json,
+            'dbsong' : dbsong_json,
         })
 
 
@@ -89,34 +106,3 @@ def create_room_view(request):
             return render(request, 'spotifymusicgame/createroom.html')
 
     return render(request, 'spotifymusicgame/createroom.html')
-
-
-
-"""
-def create_room_detial_view(request):
-    
-    qs = songModel.objects.all()
-    song_list = [{"artist": x.artist, "image": x.image, "song": x.song, "uri": x.uri} for x in qs]
-    data = {
-        "response": song_list
-    }
-    return JsonResponse(data)
-    
-    data = {}
-    if request.method == "POST":
-        a = request.POST['texttxt']
-        if not playList.objects.filter(url=a).exists():
-            playList.objects.create(url=a)
-        qs = songModel.objects.filter(playlist__url=a)
-        song_list = [{"artist": x.artist, "image": x.image,
-                      "song": x.song, "uri": x.uri} for x in qs]
-
-        data = {
-            "response": song_list
-        }
-        print(data)
-    return render(request, 'spotifymusicgame/createroom.html',{
-        "data": data
-        }
-    )
-"""

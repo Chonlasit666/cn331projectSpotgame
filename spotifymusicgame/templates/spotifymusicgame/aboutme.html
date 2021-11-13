@@ -6,20 +6,19 @@
     <link rel="stylesheet" type="text/css" href="{%static 'styles/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{%static 'styles/about.css' %}">
     <link rel="stylesheet" type="text/css" href="{%static 'login/css/main.css' %}">
-</head>
-
-<body>
+    <link rel="icon" type="image/png" href="{%static 'login/images/icons/spotify-logo.png' %}" />
     <!-- THIS IS NAVIGATION BAR !-->
     <div class="topnav">
         <a class="active" href="{% url 'smg:index' %}">Home</a>
         <a href="https://github.com/Chonlasit666/cn331projectSpotgame" target="_blank">Github</a>
         <a href="https://www.pivotaltracker.com/n/projects/2536429" target="_blank">Feature</a>
-        <a href="{% url 'smg:aboutme' %} ">About</a>
         <a href="{% url 'users:logout' %}" , style="float: right;">Logout</a>
     </div>
+</head>
+
+<body style="background-color: #212121" ;>
 
     <!-- END OF NAVIGATION BAR !-->
-    <br><br><br>
     <h1> About us </h1>
     <br>
     <div class="SMQ">
