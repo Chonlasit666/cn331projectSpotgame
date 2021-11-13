@@ -37,7 +37,7 @@
                 </b></span>
 
             <div class="wrap-input100 validate-input m-b-36">
-                <input class="input100" type="text" id="room-name-input">
+                <input class="input100" type="text" id="room-name-input" placeholder="Enter your room code here">
                 <span class="focus-input100"></span>
             </div>
 
@@ -46,12 +46,7 @@
                     Enter
                 </button>
             </div>
-            <br>
-            <div style="text-align:center">
-                <span style="float:left;"><a href="{% url 'smg:aboutme' %}" class="txt3">About us</a></span>
-                <span style="float:right;"><a href="{% url 'smg:createroom' %}" class="txt3">Create Room</a></span>
-            </div>
-            <br><br>
+
             <script>
                 document.querySelector('#room-name-input').focus();
                 document.querySelector('#room-name-input').onkeyup = function (e) {

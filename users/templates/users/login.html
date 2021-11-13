@@ -46,26 +46,26 @@
 						<span class="focus-input100"></span>
 					</div>
 
+					<span style="opacity:0;">This sentence is invisible and more inv</span> 
 
+					<a style="float:right;" href="#" class="txt3">
+						Forgot Password?
+					</a>
+
+					<br>
+					<br>
+					
 					<div class="container-login100-form-btn">
 						<button input class="login100-form-btn" type="submit">
 							Login
 						</button>
 					</div>
 
-					<br><br><br><br>
+					<a href="{% url 'users:register' %}" class="txt3 login100-form-btn" style="text-decoration: none; margin-top: -55px">
+						Sign Up
+					</a>
 
-					<span style="float:left;">
-						<a href="{% url 'users:register' %}" class="txt3">
-							Sign Up
-						</a>
-					</span>
 
-					<span style="float:right;">
-						<a href="#" class="txt3">
-							Forgot Password?
-						</a>
-					</span>
 
 				</form>
 
