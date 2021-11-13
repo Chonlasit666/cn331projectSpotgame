@@ -128,13 +128,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def player_leaveroom(self):
         room_id =  self.room_name = self.scope['url_route']['kwargs']['room_name']
-        current = roomInfo.objects.get(id=room_id)
-        current.player_inroom = current.player_inroom - 1
-        current.save()
+        current_room = roomInfo.objects.get(id=room_id)
+        current_playlist = playList.objects.filter(url = current_room.url)
+        current_room.player_inroom = current_room.player_inroom - 1
+        current_room.save()
         print("Player Disconnect")
-        print(f"player in room {room_id} {current.player_inroom} player")
+        print(f"player in room {room_id} {current_room.player_inroom} player")
 
-        if current.player_inroom == 0 :
-            current.delete()
+        if current_room.player_inroom == 0 :
+            current_room.delete()
+            current_playlist.delete()
         
         

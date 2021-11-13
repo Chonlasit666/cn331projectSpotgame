@@ -37,7 +37,7 @@
                 </b></span>
 
             <div class="wrap-input100 validate-input m-b-36">
-                <input class="input100" type="text" id="room-name-input">
+                <input class="input100" type="text" id="room-name-input" placeholder="Enter your room code here">
                 <span class="focus-input100"></span>
             </div>
 
@@ -46,12 +46,15 @@
                     Enter
                 </button>
             </div>
-            <br>
-            <div style="text-align:center">
-                <span style="float:left;"><a href="{% url 'smg:aboutme' %}" class="txt3">About us</a></span>
-                <span style="float:right;"><a href="{% url 'smg:createroom' %}" class="txt3">Create Room</a></span>
-            </div>
-            <br><br>
+
+            {% if messages %}
+            <ul class="messages" style="color: red; text-align:left;">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                    {% endfor %}
+            </ul>
+            {% endif %}
+
             <script>
                 document.querySelector('#room-name-input').focus();
                 document.querySelector('#room-name-input').onkeyup = function (e) {
@@ -62,6 +65,14 @@
 
                 document.querySelector('#room-name-submit').onclick = function (e) {
                     var roomName = document.querySelector('#room-name-input').value;
+                    if (roomName == "") {
+                        alert("Please enter your room code");
+                        return false;
+                    }
+                    if (isNaN(roomName)) {
+                        alert("Room code must be number");
+                        return false;
+                    }
                     window.location.pathname = '(%3FP' + roomName + '%5cd+)/$';
                 };
             </script>

@@ -28,10 +28,8 @@ def room(request, room_name):
     current_user = roomInfo.objects.get(id=room_name).player_inroom
     max_user = roomInfo.objects.get(id=room_name).max_player
     is_playing = roomInfo.objects.get(id=room_name).is_playing
-    #check if room full 
     if(current_user >= max_user) :
         return render(request, "spotifymusicgame/index.html")
-    #check if room playing    
     if(is_playing):
          return render(request, "spotifymusicgame/index.html")
 
@@ -48,14 +46,17 @@ def room(request, room_name):
             if not i.uri:
                 pass
             else:
-                songs.append(str(i.song).replace("'",""))
-                artists.append(str(i.artist).replace("'",""))
-                images.append(str(i.image).replace("'",""))
-                uris.append(str(i.uri).replace("'",""))
+                songs.append(str(i.song).replace("'","").replace("[","").replace("]","").replace('"',''))
+                artists.append(str(i.artist).replace("'","").replace("[","").replace("]","").replace('"',''))
+                images.append(str(i.image).replace("'","").replace("[","").replace("]","").replace('"',''))
+                uris.append(str(i.uri).replace("'","").replace("[","").replace("]","").replace('"',''))
+
+        if len(songs) == 0:
+            return render(request, "spotifymusicgame/index.html")
 
         for j in songModel.objects.all():
-            dbsong.append(str(j.song).replace("'",""))
-        
+            dbsong.append(str(j.song).replace("'","").replace("[","").replace("]","").replace('"',''))
+        print(songs)
         seed = room_name
         random.Random(seed).shuffle(songs)
         random.Random(seed).shuffle(artists)
