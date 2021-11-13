@@ -12,6 +12,7 @@
     <title>Enter Chat Room</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{%static 'styles/split.css' %}">
     <link rel="stylesheet" type="text/css" href="{%static 'styles/navbar.css' %}">
     <link rel="icon" type="image/png" href="{%static 'login/images/icons/spotify-logo.png' %}" />
     <link rel="stylesheet" type="text/css" href="{%static 'login/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
@@ -19,9 +20,6 @@
     <link rel="stylesheet" type="text/css" href="{%static 'login/css/util.css' %}">
     <link rel="stylesheet" type="text/css" href="{%static 'login/css/main.css' %}">
 
-</head>
-
-<body>
     <div class="topnav">
         <a class="active" href="{% url 'smg:index' %}">Home</a>
         <a href="{% url 'smg:aboutme' %} " target="_blank">About</a>
@@ -29,43 +27,55 @@
         <a class="active" href="{% url 'users:logout' %}" , style="float: right;">Logout</a>
     </div>
 
-    <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-enter-room p-l-85 p-r-85 p-t-55 p-b-55">
-                <span class="login100-form-title p-b-32"><b>
-                        Please enter your room :
-                    </b></span>
+</head>
 
-                <div class="wrap-input100 validate-input m-b-36">
-                    <input class="input100" type="text" id="room-name-input">
-                    <span class="focus-input100"></span>
-                </div>
+<body style="background-color: #212121" ;>
+    <div class="centered">
+        <div class="wrap-enter-room p-l-85 p-r-85 p-t-55 p-b-55">
+            <span class="login100-form-title p-b-32"><b>
+                    Please enter your room :
+                </b></span>
 
-                <div class="room-container-login100-form-btn">
-                    <button input class="login100-form-btn" type="submit" id="room-name-submit">
-                        Enter
-                    </button>
-                </div>
-                <br>
-                <div style="text-align:center">
-                    <span style="float:left;"><a href="{% url 'smg:aboutme' %}" class="txt3">About us</a></span>
-                    <span style="float:right;"><a href="{% url 'smg:createroom' %}" class="txt3">Create Room</a></span>
-                </div>
-                <br><br>
-                <script>
-                    document.querySelector('#room-name-input').focus();
-                    document.querySelector('#room-name-input').onkeyup = function (e) {
-                        if (e.keyCode === 13) {  // enter, return
-                            document.querySelector('#room-name-submit').click();
-                        }
-                    };
-
-                    document.querySelector('#room-name-submit').onclick = function (e) {
-                        var roomName = document.querySelector('#room-name-input').value;
-                        window.location.pathname = '(%3FP' + roomName + '%5cd+)/$';
-                    };
-                </script>
+            <div class="wrap-input100 validate-input m-b-36">
+                <input class="input100" type="text" id="room-name-input" placeholder="Enter your room code here">
+                <span class="focus-input100"></span>
             </div>
+
+            <div class="room-container-login100-form-btn">
+                <button input class="login100-form-btn" type="submit" id="room-name-submit">
+                    Enter
+                </button>
+            </div>
+
+            {% if messages %}
+            <ul class="messages" style="color: red; text-align:left;">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                    {% endfor %}
+            </ul>
+            {% endif %}
+
+            <script>
+                document.querySelector('#room-name-input').focus();
+                document.querySelector('#room-name-input').onkeyup = function (e) {
+                    if (e.keyCode === 13) {  // enter, return
+                        document.querySelector('#room-name-submit').click();
+                    }
+                };
+
+                document.querySelector('#room-name-submit').onclick = function (e) {
+                    var roomName = document.querySelector('#room-name-input').value;
+                    if (roomName == "") {
+                        alert("Please enter your room code");
+                        return false;
+                    }
+                    if (isNaN(roomName)) {
+                        alert("Room code must be number");
+                        return false;
+                    }
+                    window.location.pathname = '(%3FP' + roomName + '%5cd+)/$';
+                };
+            </script>
         </div>
     </div>
 </body>

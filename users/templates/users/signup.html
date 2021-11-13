@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <title>Sign-up</title>
+<head>
+
+</head>
+<body>
+    <form action="{% url 'users:signup' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+    <button type = "submit">submit</button>
+    </form>
+</body>
+</html>

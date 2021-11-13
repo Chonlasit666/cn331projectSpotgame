@@ -1,9 +1,8 @@
 import json
-from typing import Counter
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import *
-from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -15,8 +14,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-
         await self.accept()
+        await self.player_joinroom()
+        #print("connected")
 
     async def disconnect(self, close_code):
         # Leave room group
@@ -24,15 +24,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+        await self.player_leaveroom()
+        #print("disconnected....")
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-
         text_data_json = json.loads(text_data)
         username = text_data_json['username']
         action = text_data_json['action']
-        print("recive")
-
+        
         if action == "chat" :
             message = text_data_json['message']
             # Send message to room group
@@ -47,17 +47,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
         
         elif action == "ready":
+            message = text_data_json['message']
             await self.ready_users()
             # Send status to room group
             await self.channel_layer.group_send(
                 self.room_group_name,
             {
                     'type': 'ready',
+                    'message': message,
                     'username': username,
                     'action' : action,
                 }
             )
-
+        
+        
     # Receive message from room group
     async def chat_message(self, event):
         message = event['message']
@@ -70,37 +73,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'username': username,
             'action': action,
         }))
-
+        #await self.close()
+        
     #--------------------------------------------------
-    # Receive message from room group
+    # Receive status from room group
     async def ready(self, event):
+        message = "has ready!"
         username = event['username']
         action = event['action']
-        
-        #print("receive" + action)
-        max_user = await self.max_users()
-        ready_user = await self.play()
-        print(ready_user)
-        print(max_user)
-        #print(ready_user)
-        if max_user <= ready_user :
-            print("test play")
+    
+        play = await self.play()
+
+        if play :
             action = "play"
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
+            'message': message,
             'username': username,
             'action': action,
         }))
-
-
-        
-    @database_sync_to_async
-    def max_users(self):
-        room_id =  self.room_name = self.scope['url_route']['kwargs']['room_name']
-        max_user = roomInfo.objects.get(id=room_id).max_player
-        return max_user
-
 
     @database_sync_to_async
     def ready_users(self):
@@ -112,6 +104,39 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def play(self):
         room_id =  self.room_name = self.scope['url_route']['kwargs']['room_name']
-        current_user = roomInfo.objects.get(id=room_id).ready_player
- 
-        return current_user
+        flag = False
+        current_ready_user = roomInfo.objects.get(id=room_id).ready_player
+        max_user = roomInfo.objects.get(id=room_id).max_player
+        playing = roomInfo.objects.get(id=room_id)
+        if current_ready_user >= max_user :
+            flag = True
+            playing.is_playing = True
+            playing.save()
+
+
+        return flag
+
+    @database_sync_to_async
+    def player_joinroom(self):
+        room_id =  self.room_name = self.scope['url_route']['kwargs']['room_name']
+        current = roomInfo.objects.get(id=room_id)
+        current.player_inroom = current.player_inroom + 1
+        current.save()
+        print(f"player in room {room_id} {current.player_inroom} player")
+        
+
+    @database_sync_to_async
+    def player_leaveroom(self):
+        room_id =  self.room_name = self.scope['url_route']['kwargs']['room_name']
+        current_room = roomInfo.objects.get(id=room_id)
+        current_playlist = playList.objects.filter(url = current_room.url)
+        current_room.player_inroom = current_room.player_inroom - 1
+        current_room.save()
+        print("Player Disconnect")
+        print(f"player in room {room_id} {current_room.player_inroom} player")
+
+        if current_room.player_inroom == 0 :
+            current_room.delete()
+            current_playlist.delete()
+        
+        
