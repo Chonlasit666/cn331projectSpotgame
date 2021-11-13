@@ -101,7 +101,7 @@ def create_room_view(request):
                     messages.info(request, 'Max player must be number')
                 if not URI_:
                     messages.info(request, 'Please enter playlist URI')
-                if not ("spotify:playlist:") in URI_:
+                elif not ("spotify:playlist:") in URI_:
                     messages.info(request, 'Please enter valid spotify playlist')
                 return render(request, 'spotifymusicgame/createroom.html')
 
