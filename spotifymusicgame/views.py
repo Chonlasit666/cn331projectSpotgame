@@ -1,10 +1,8 @@
-from django.http.response import HttpResponseRedirect, JsonResponse
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.core import serializers
 from django.contrib import messages
 import json
-from django.core.serializers.json import DjangoJSONEncoder
 from .models import *
 import random
 
@@ -22,8 +20,15 @@ def index(request):
 
 def room(request, room_name):
     try: 
-        check = roomInfo.objects.get(id = room_name)
+        roomInfo.objects.get(id = room_name)
     except:
+        return render(request, "spotifymusicgame/index.html")
+
+    #check if room full 
+    current_user = roomInfo.objects.get(id=room_name).player_inroom
+    max_user = roomInfo.objects.get(id=room_name).max_player
+
+    if(current_user >= max_user) :
         return render(request, "spotifymusicgame/index.html")
 
     if not request.user.is_authenticated:
@@ -97,34 +102,3 @@ def create_room_view(request):
             return render(request, 'spotifymusicgame/createroom.html')
 
     return render(request, 'spotifymusicgame/createroom.html')
-
-
-
-"""
-def create_room_detial_view(request):
-    
-    qs = songModel.objects.all()
-    song_list = [{"artist": x.artist, "image": x.image, "song": x.song, "uri": x.uri} for x in qs]
-    data = {
-        "response": song_list
-    }
-    return JsonResponse(data)
-    
-    data = {}
-    if request.method == "POST":
-        a = request.POST['texttxt']
-        if not playList.objects.filter(url=a).exists():
-            playList.objects.create(url=a)
-        qs = songModel.objects.filter(playlist__url=a)
-        song_list = [{"artist": x.artist, "image": x.image,
-                      "song": x.song, "uri": x.uri} for x in qs]
-
-        data = {
-            "response": song_list
-        }
-        print(data)
-    return render(request, 'spotifymusicgame/createroom.html',{
-        "data": data
-        }
-    )
-"""
