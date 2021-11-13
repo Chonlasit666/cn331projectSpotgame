@@ -46,22 +46,34 @@
 						<span class="focus-input100"></span>
 					</div>
 
-					<span style="opacity:0;">This sentence is invisible and more inv</span> 
+					<div>
+						<span style="opacity:0;">This sentence is invisible and more inv</span>
+						<a href="#" class="txt3" style="float:right;">
+							Forgot Password?
+						</a>
+					</div>
 
-					<a style="float:right;" href="#" class="txt3">
-						Forgot Password?
-					</a>
+					<div>
+						<span style="opacity:0;">This sentence is invisible and more inv</span>
+						{% if messages %}
+						<ul class="messages txt3" style="color: red; float:right;">
+							{% for message in messages %}
+							<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+								{% endfor %}
+						</ul>
+						{% endif %}
+					</div>
 
 					<br>
-					<br>
-					
+
 					<div class="container-login100-form-btn">
 						<button input class="login100-form-btn" type="submit">
 							Login
 						</button>
 					</div>
 
-					<a href="{% url 'users:register' %}" class="txt3 login100-form-btn" style="text-decoration: none; margin-top: -55px">
+					<a href="{% url 'users:register' %}" class="txt3 login100-form-btn"
+						style="text-decoration: none; margin-top: -55px">
 						Sign Up
 					</a>
 
