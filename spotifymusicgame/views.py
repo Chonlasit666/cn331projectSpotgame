@@ -66,7 +66,7 @@ def room(request, room_name):
         for j in songModel.objects.all():
             dbsong.append(str(j.song).replace("'", "").replace(
                 "[", "").replace("]", "").replace('"', ''))
-        print(songs)
+        #print(songs)
         seed = room_name
         random.Random(seed).shuffle(songs)
         random.Random(seed).shuffle(artists)
