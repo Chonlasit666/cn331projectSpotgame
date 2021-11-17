@@ -24,7 +24,7 @@
 </head>
 
 <body style="background-color:#212121">
-
+    <input id="vol-control" type="range" min="0" max="100" step="1" oninput="SetVolume(this.value)" onchange="SetVolume(this.value)"></input>
     <div style="padding: 10px 10px 10px 10px; background-color: #535353; float:left; margin-left: 50px; margin-right: 50px;">
         <h1 style="color:white; float:right; text-align:left;"> Room ID: {{room_name}} </h1>
         <br>
@@ -222,7 +222,10 @@
         var answerInput = document.getElementById('answer');
         var trackcountOUTPUT = document.getElementById('trackcount');
 
-
+        function SetVolume(val){
+        audio.volume = val / 100;
+        }
+        
         function useValue() {
             NameValue = answerInput.value;
             console.log(NameValue);
