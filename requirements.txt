@@ -56,7 +56,6 @@ packaging==21.2
 pyparsing==2.4.7
 regex==2021.11.10
 setuptools-scm==6.3.2
-textblob==0.17.1
 tomli==1.2.2
 tqdm==4.62.3
 unidic-lite==1.0.8

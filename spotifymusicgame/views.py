@@ -30,13 +30,18 @@ def room(request, room_name):
     try:
         roomInfo.objects.get(id=room_name)
     except:
+        messages.info(request, 'The room is not available')
         return render(request, "spotifymusicgame/index.html")
+
     current_user = roomInfo.objects.get(id=room_name).player_inroom
     max_user = roomInfo.objects.get(id=room_name).max_player
     is_playing = roomInfo.objects.get(id=room_name).is_playing
+
     if(current_user >= max_user):
+        messages.info(request, 'That room is already full')
         return render(request, "spotifymusicgame/index.html")
     if(is_playing):
+        messages.info(request, 'That room is already playing')
         return render(request, "spotifymusicgame/index.html")
 
     if not request.user.is_authenticated:
@@ -112,12 +117,19 @@ def create_room_view(request):
         try:
 
             URI_ = request.POST['URI']
+            Max_player = request.POST['Max_player']
 
-            if not URI_:
-                messages.info(request, 'Please enter playlist URI')
+            if (not URI_) or (not Max_player) or (not Max_player.isdecimal()) or (not ("spotify:playlist:") in URI_):
+                if not Max_player:
+                    messages.info(request, 'Please enter max player')
+                elif not Max_player.isdecimal():
+                    messages.info(request, 'Max player must be number')
+                if not URI_:
+                    messages.info(request, 'Please enter playlist URI')
+                elif not ("spotify:playlist:") in URI_:
+                    messages.info(request, 'Please enter valid spotify playlist')
                 return render(request, 'spotifymusicgame/createroom.html')
 
-            Max_player = request.POST['Max_player']
             if not playList.objects.filter(url=URI_).exists():
                 playList.objects.create(url=URI_)
             this_playlist = playList.objects.get(url=URI_)
