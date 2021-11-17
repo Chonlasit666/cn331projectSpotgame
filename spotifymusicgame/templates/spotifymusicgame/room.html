@@ -24,11 +24,20 @@
 </head>
 
 <body style="background-color:#212121">
-    <input id="vol-control" type="range" min="0" max="100" step="1" oninput="SetVolume(this.value)" onchange="SetVolume(this.value)"></input>
-    <div style="padding: 10px 10px 10px 10px; background-color: #535353; float:left; margin-left: 50px; margin-right: 50px;">
-        <h1 style="color:white; float:right; text-align:left;"> Room ID: {{room_name}} </h1>
+
+    <div
+        style="padding: 10px 10px 10px 10px; background-color: #535353; float:left; margin-left: 50px; margin-right: 50px; left:0;">
+        <h1 style="color:white; float:right; text-align:left;"> Room ID : {{room_name}} </h1>
         <br>
-        <h1 style="color:white; float:left; text-align:left;" id="score">Score: 0</h1>
+        <h1 style="color:white; float:left; text-align:left;" id="score">Score : 0</h1>
+    </div>
+
+    <div
+        style="padding: 10px 10px 10px 10px; background-color: #535353; float:left; margin-left: 50px; margin-right: 50px; position:fixed; bottom:3vw; left:0;">
+        <h1 style="color:white; float:center; text-align:center;"> Sound Settings </h1> <br>
+        <span style="opacity:0;">Thish</span>
+        <input style="float:center;" id="vol-control" type="range" min="0" max="100" step="1" oninput="SetVolume(this.value)"
+            onchange="SetVolume(this.value)"></input>
     </div>
 
     <div class="centered">
@@ -62,7 +71,8 @@
             <br> <br>
 
             <div class="wrap-input100 validate-input m-b-36">
-                <input type="text" class="input100" id="answer" onblur="changeVal();"  placeholder="Guess song name here..."/> </input>
+                <input type="text" class="input100" id="answer" onblur="changeVal();"
+                    placeholder="Guess song name here..." /> </input>
                 <span class="focus-input100"></span>
             </div>
 
@@ -82,7 +92,8 @@
             <br>
 
             <textarea readonly style="resize:none; background-color: #b3b3b3; 
-            font-family: Raleway-Medium; font-size: 16px; height:300px; width:300px;" id="chat-log" class="output100"></textarea>
+            font-family: Raleway-Medium; font-size: 16px; height:300px; width:300px;" id="chat-log"
+                class="output100"></textarea>
             <br><br>
 
             <div class="wrap-input100 validate-input m-b-36">
@@ -222,10 +233,10 @@
         var answerInput = document.getElementById('answer');
         var trackcountOUTPUT = document.getElementById('trackcount');
 
-        function SetVolume(val){
-        audio.volume = val / 100;
+        function SetVolume(val) {
+            audio.volume = val / 100;
         }
-        
+
         function useValue() {
             NameValue = answerInput.value;
             console.log(NameValue);
